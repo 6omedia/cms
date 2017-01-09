@@ -1,0 +1,26 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	
+}
+
+h1, h2, h3 {
+	font-family: 'Baloo Thambi', cursive;
+}
+
+p, li, input, button, a {
+	font-family: 'Nunito', sans-serif;
+}
+
+img {
+	width: 100%;
+}
+
+/* dry classes */
+
+.list {
+	list-style: none;
+	padding: 0px;
+}

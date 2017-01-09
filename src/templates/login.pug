@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	.container 
+		section
+			h1 login
+			form(method="POST", action="")
+				ul.list
+					li 
+						input(type="text", name="email", placeholder="Email...")
+					li 
+						input(type="password", name="password", placeholder="Password...")
+					li 
+						button Login

@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	.container 
+		section
+			h1 Sign Up
+			form(method="POST", action="/signup")
+				ul.list
+					li 
+						input(type="text", name="fullName", placeholder="Full Name...")
+					li 
+						input(type="email", name="email", placeholder="Email...")
+					li 
+						input(type="password", name="password", placeholder="Password...")
+					li 
+						input(type="password", name="passwordConfirm", placeholder="Confirm Password...")
+					li 
+						button Sign Up

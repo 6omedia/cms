@@ -1,0 +1,97 @@
+extends admin_layout
+
+block content
+	div(id="datablock", style="display: none", data-businessid=`${businessid}`)
+	h1 Edit #{business.name}
+	.form
+		.row
+			.col-sm-4
+				ul.list
+					li
+						h2 Contact Details
+					li
+						label Business Name
+						input(type="text", id="q_name", value=`${business.name}`)
+					li
+						label Website
+						input(type="text", id="q_website", value=`${business.website}`)
+					li
+						label Phone Number
+						input(type="text", id="q_phone", value=`${business.phone}`)
+					li
+						label Email Address
+						input(type="text", id="q_email", value=`${business.email}`)
+					li
+						label First line of Address
+						input(type="text", id="q_addresslineone", value=`${business.fladdress}`)
+					li
+						label Town/City
+						input(type="text", id="q_town", value=`${business.town}`)
+					li
+						label Post Code
+						input(type="text", id="q_postcode", value=`${business.postcode}`)
+			.col-sm-4
+				ul.list
+					li
+						h2 Business Details
+					li
+						label Industry
+						select#q_industry
+							option(value="") -select service-
+							each industry in industries
+								if industry == business.industry
+									option(value=`${industry}` selected="selected") #{industry}
+								else
+									option(value=`${industry}`) #{industry}
+
+					li
+						label Opening Hours
+						input(type="text", id="q_openinghours")
+					li
+						label Service One
+						select#q_service1
+							option(value="") -select service-
+							each service in services
+								if service == business.serv1
+									option(value=`${service}` selected="selected") #{service}
+								else
+									option(value=`${service}`) #{service}
+					li
+						label Service Two
+						select#q_service2
+							option(value="") -select service-
+							option(value="tatto studio") vnfldvn
+							option(value="pizza") vfvfd
+							option(value="coffee shop") cdscsd
+					li
+						label Service Three
+						select#q_service3
+							option(value="") -select service-
+							option(value="tatto studio") vnfldvn
+							option(value="pizza") vfvfd
+							option(value="coffee shop") cdscsd
+			.col-sm-4
+				ul.list
+					li
+						h2 Social Media Links
+						p (Fill out only those that apply to this business)
+					li
+						label Facebook
+						input(type="text", id="q_fb", value=`${business.facebook}`)
+					li
+						label Twitter
+						input(type="text", id="q_tw", value=`${business.twitter}` )
+					li
+						label Instagram
+						input(type="text", id="q_in", value=`${business.instagram}`)
+					li
+						label YouTube
+						input(type="text", id="q_yt", value=`${business.youtube}`)
+					li
+						label Linked In
+						input(type="text", id="q_li", value=`${business.linkedin}`)
+			
+		p.btn(id="update_btn") Update
+		p.btn(id="delete_btn") Delete
+		#error_box
+		#successBox

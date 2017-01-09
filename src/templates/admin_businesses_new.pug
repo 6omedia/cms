@@ -1,0 +1,90 @@
+extends admin_layout
+
+block content
+	h1 Add a New Business
+	.form
+		.row
+			.col-sm-4
+				ul.list
+					li
+						h2 Contact Details
+					li
+						label Business Name
+						input(type="text", id="q_name")
+					li
+						label Website
+						input(type="text", id="q_website")
+					li
+						label Phone Number
+						input(type="text", id="q_phone")
+					li
+						label Email Address
+						input(type="text", id="q_email")
+					li
+						label First line of Address
+						input(type="text", id="q_addresslineone")
+					li
+						label Town/City
+						input(type="text", id="q_town")
+					li
+						label Post Code
+						input(type="text", id="q_postcode")
+			.col-sm-4
+				ul.list
+					li
+						h2 Business Details
+					li
+						label Industry
+						select#q_industry
+							option(value="") -select industry-
+							option(value="tatto studio") tatto studio
+							option(value="pizza") pizza
+							option(value="coffee shop") coffee shop
+					li
+						label Opening Hours
+						input(type="text", id="q_openinghours")
+					li
+						label Service One
+						select#q_service1
+							option(value="") -select service-
+							each service in services
+								option(value=`${service}`) #{service}
+					li
+						label Service Two
+						select#q_service2
+							option(value="") -select service-
+							option(value="tatto studio") vnfldvn
+							option(value="pizza") vfvfd
+							option(value="coffee shop") cdscsd
+					li
+						label Service Three
+						select#q_service3
+							option(value="") -select service-
+							option(value="tatto studio") vnfldvn
+							option(value="pizza") vfvfd
+							option(value="coffee shop") cdscsd
+			.col-sm-4
+				ul.list
+					li
+						h2 Social Media Links
+						p (Fill out only those that apply to this business)
+					li
+						label Facebook
+						input(type="text", id="q_fb")
+					li
+						label Twitter
+						input(type="text", id="q_tw")
+					li
+						label Instagram
+						input(type="text", id="q_in")
+					li
+						label YouTube
+						input(type="text", id="q_yt")
+					li
+						label Linked In
+						input(type="text", id="q_li")
+			
+		p.btn(href="", id="send_btn") Submit
+		#error_box
+		#successBox
+	

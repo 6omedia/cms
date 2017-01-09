@@ -1,0 +1,27 @@
+include ./partials/_admin_head.pug
+include ./partials/_admin_header.pug
+body
+	.side_section
+		a(href="/admin/businesses")
+			h2 Businesses
+		a(href="/admin/posts")
+			h2 Posts
+		a(href="/admin/visitors")
+			h2 Visitors
+	.main_section
+		block content
+
+	script(src='/static/js/jquery-3.1.1.min.js')
+	script(src='/static/js/popup.js')
+	script(src='/static/js/form.js')
+	script(src='/static/js/forminfo.js')
+	script(src='/static/js/admin.js')
+
+	case admin_script
+		when 'business'
+			script(src='/static/js/admin_business.js')
+		when 'posts'
+			script(src='/static/js/admin_posts.js')
+		when 'visitors'
+			script(src='/static/js/admin_visitors.js')
+

@@ -1,0 +1,32 @@
+include ./partials/_head.pug
+
+body
+	.main_img_box
+		header
+			.container-fluid
+				.row
+					.col-sm-4 
+						a(href="/") 
+							h1 Website
+					.col-sm-8
+						ul.user_nav
+							if !currentUser 
+								li
+									a(href="/login") login
+								li 
+									a(href="/signup") Signup
+
+							if currentUser
+								li
+									a(href="/profile") My Profile
+								li
+									a(href="/logout") logout
+
+
+	block content
+
+	footer
+		p Website 2016 All Rights Reserved
+
+	script(src='/static/js/jquery-3.1.1.min.js')
+	script(src='/static/js/main.js')

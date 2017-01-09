@@ -1,0 +1,211 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: #fef1dc;
+}
+
+h1, h2, h3 {
+	font-family: 'Baloo Thambi', cursive;
+}
+
+p, li, input, button, a {
+	font-family: 'Nunito', sans-serif;
+}
+
+a {
+	color: auto;
+}
+
+img {
+	width: 100%;
+}
+
+.btn {
+	background: #2f416d;
+    color: #fff;
+}
+
+.btn:hover {
+	color: #fff;
+	opacity: 0.8;
+}
+
+label {
+    width: 140px;
+    font-size: 16px;
+    vertical-align: top;
+}
+
+/* dry classes */
+
+.list {
+	list-style: none;
+	padding: 0px;
+}
+
+header {
+	background: #2d2d2d;
+	padding: 10px 0px;
+}
+
+header h1 {
+	display: inline-block;
+    color: #fff;
+    margin: 0px;
+}
+
+#logout_btn {
+    float: right;
+    font-size: 18px;
+    background: rgb(255, 255, 255);
+    display: inline-block;
+    padding: 7px 15px;
+}
+
+.side_section {
+	width: 300px;
+    min-height: 1000px;
+    float: left;
+    background: #334369;
+    padding: 15px;
+}
+
+.side_section a {
+	color: #c7cfe0;
+}
+
+.main_section {
+    padding: 20px 40px 0px 40px;
+	float: right;
+	background: #fff;
+	width: calc(100% - 300px);
+	min-height: 1000px;
+}
+
+.main_section h1 {
+	border-bottom: solid 4px;
+}
+
+.main_section .addnew {
+	margin-top: 20px;
+}
+
+#business_list {
+	padding-right: 10px;
+}
+
+#business_list > li {
+	background: #ddd;
+	padding: 0px 10px;
+}
+
+#business_list > li:nth-child(even){
+	background: #cccccc;
+}
+
+#business_list li a {
+	/*background: #ddd;*/
+	padding: 10px;
+	display: inline-block;
+}
+
+#business_filter {
+	margin: 20px 0px 10px 0px;
+	padding: 5px;
+	width: 400px;
+}
+
+.form {
+	margin-top: 30px;
+}
+
+.form ul li {
+	margin-bottom: 10px;
+}
+
+.form .btn {
+	margin-top: 20px;
+}
+
+.form label {
+	width: 33%;
+}
+
+.form input,
+.form select {
+    width: 66%;
+}
+
+#error_box {
+    margin-top: 20px;
+    background: #eee;
+    border-left: solid 4px #d81515;
+    padding: 10px;
+    font-weight: bold;
+    display: none;
+}
+
+#successBox {
+	margin-top: 20px;
+    background: #eee;
+    border-left: solid 4px #68e468;
+    padding: 10px;
+    font-weight: bold;
+    display: none;
+}
+
+.invalid {
+	border: solid 1px red;
+}
+
+.operations {
+	float: right;
+}
+
+.operations li {
+	display: inline-block;
+	padding: 0px 10px;
+}
+
+.operations li span {
+    display: inline-block;
+    padding: 4px;
+    border: solid 2px #c5c5c5;
+    border-radius: 5px;
+    margin-top: 4px;
+}
+
+/* business edit page */
+
+#delete_btn {
+    margin-left: 10px;
+    background: #bb3838;
+}
+
+.expand_select_p {
+	text-align: right;
+    padding: 10px;
+}
+
+/* Modal */
+
+.modal {
+	background: rgba(0,0,0,0.8);
+	z-index: 1;
+	width: 100%;
+	height: 1000px;
+	display: block;
+	position: fixed;
+}
+
+.modal .box {
+    background: #fff;
+    /* position: absolute; */
+    width: 600px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 30px;
+    border-radius: 5px;
+}

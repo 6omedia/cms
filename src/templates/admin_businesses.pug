@@ -1,0 +1,17 @@
+extends admin_layout
+
+block content
+	h1 Businesses
+	a(href="/admin/businesses/new" class="btn addnew") Add New Business
+	br
+	input(id="business_filter", type="text", placeholder="filter...")
+
+	ul.list#business_list
+		each business in businesses
+			li
+				a(href=`/admin/businesses/${business._id}`) #{business.name}
+				ul.list.operations
+					li
+						span Delete
+					li
+						span Edit
