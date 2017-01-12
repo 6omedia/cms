@@ -1,0 +1,17 @@
+extends admin_layout
+
+block content
+	h1 Posts
+	a(href="/admin/posts/new" class="btn addnew") Create New Post
+	br
+	input.filter(id="posts_filter", type="text", placeholder="filter...")
+
+	ul.list.entity_list#post_list
+		each post in posts
+			li
+				a(href=`/admin/posts/${post._id}`) #{post.title}
+				ul.list.operations
+					li
+						span.delete.delbtn(data-postid=`${post._id}`) Delete
+					li
+						a(href=`/admin/posts/${post._id}`) Edit

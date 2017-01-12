@@ -1,0 +1,21 @@
+extends admin_layout
+
+block content
+	h1 Users
+	a(href="/admin/users/new" class="btn addnew") Add New User
+	br
+	input.filter(id="user_filter", type="text", placeholder="filter...")
+
+	ul.list.entity_list#user_list
+		each user in users
+			li
+				a(href=`/admin/users/${user._id}`) #{user.fullname}
+				if user.isadmin
+					span.isadmin Admin
+				ul.list.operations
+					li
+						span.delete.delbtn(data-userid=`${user._id}`) Delete
+					li
+						a(href=`/admin/user/${user._id}`) Edit
+
+	#error_box

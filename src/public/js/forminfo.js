@@ -122,15 +122,88 @@ const forminfo = {
 	},
 	posts_form: {
 		sendBtn: $('#send_btn'),
+		updateBtn: $('#update_btn'),
 		errorBox: $('#error_box'),
 		successBox: $('#successBox'),
 		spinImg: '/img/spin.png',
 		requiredFeilds: [
 			{
-				feildName: 'name',
+				feildName: 'title',
+				elem: $('#q_title'),
+				value: '',
+				error: 'Title required',
+				required: true
+			},
+			{
+				feildName: 'slug',
+				elem: $('#q_slug'),
+				value: '',
+				error: 'Slug required',
+				required: true
+			},
+			{
+				feildName: 'content',
+				elem: $('#q_content'),
+				value: '',
+				required: false
+			}
+		]
+	},
+	cats_form: {
+		sendBtn: $('#add_cat'),
+		updateBtn: $('#update_cats_btn'),
+		errorBox: $('#cats_err'),
+		successBox: $('#cats_success'),
+		spinImg: '/img/spin.png',
+		requiredFeilds: [
+			{
+				feildName: 'Category Name',
+				elem: $('#q_catname'),
+				value: '',
+				error: 'Name required',
+				required: true
+			},
+			{
+				feildName: 'Category Description',
+				elem: $('#q_cat_description'),
+				value: '',
+				required: false
+			}
+		]
+	},
+	users_form: {
+		sendBtn: $('#send_btn'),
+		updateBtn: $('#update_btn'),
+		errorBox: $('#error_box'),
+		successBox: $('#successBox'),
+		spinImg: '/img/spin.gif',
+		requiredFeilds: [
+			{
+				feildName: 'Full Name',
 				elem: $('#q_name'),
 				value: '',
-				error: 'Business Name required',
+				error: 'Name required',
+				required: true
+			},
+			{
+				feildName: 'Email',
+				elem: $('#q_email'),
+				value: '',
+				error: 'Email required',
+				required: true
+			},
+			{
+				feildName: 'Password',
+				elem: $('#q_password'),
+				value: '',
+				error: 'Password required',
+				required: true
+			},
+			{
+				feildName: 'Confirm Password',
+				elem: $('#q_passwordconfirm'),
+				value: '',
+				error: 'Passwords are empty or do not match',
 				required: true
 			}
 		]

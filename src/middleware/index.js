@@ -16,5 +16,11 @@ function requiresLogin(req, res, next){
 	}
 }
 
+function checkPermission(req, res, next){
+
+	
+	
+}
+
 module.exports.loggedOut = loggedOut;
 module.exports.requiresLogin = requiresLogin;

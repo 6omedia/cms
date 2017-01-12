@@ -1,7 +1,6 @@
 
 const businessForm = new Form(forminfo.business_form);
 
-
 // Adding a new Business
 
 businessForm.sendBtn.on('click', function(){
@@ -107,35 +106,10 @@ $('#delete_btn').on('click', function(){
 
 	const businessid = $('#datablock').data('businessid');
 
-	// popup window
-	// pass a function to call in the popup function...
 	const popup = new Popup(
 		// positive
 		function(){
-			
-			$.ajax({
-				url: '/admin/api/delete_business',
-				type: 'POST',
-				// dataType: 'json',
-				data:
-				{
-					businessid: businessid
-				},
-				success: function(data)
-				{
-					businessForm.enableSubmit();
-					if(data.success == '1'){
-						window.location.replace('/admin/businesses');
-					}else{
-						businessForm.errorBox.html('Something went wrong, please try again later...').slideDown();
-					}
-				},
-				error: function(xhr, desc, err)
-				{
-					console.log(xhr, desc, err);
-				}
-			});
-
+			delete_thing('business', businessid, '/admin/businesses', businessForm);
 		}, 
 		// negitive
 		function(){
@@ -144,5 +118,26 @@ $('#delete_btn').on('click', function(){
 	);
 
 	popup.popUp('Are you sure you want to delete this Business?');
+
+});
+
+// Businesses Page 
+
+$('.delete').on('click', function(){
+
+	const businessid = $(this).data('businessid');
+
+	const popup = new Popup(
+		// positive
+		function(){
+			delete_thing('business', businessid, '/admin/businesses', businessForm);
+		}, 
+		// negitive
+		function(){
+			popup.popDown();
+		}
+	);
+
+	popup.popUp('Are you sure you want to delete this Post?');
 
 });

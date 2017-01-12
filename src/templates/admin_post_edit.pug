@@ -1,0 +1,67 @@
+extends admin_layout
+
+block content
+	div(id="datablock", style="display: none", data-postid=`${postid}`)
+	h1 Edit, #{post.title}
+	.form.postForm
+		.row
+			.col-sm-8
+				ul.list.postformList
+					li
+						h3 Title
+						input(type="text", id="q_title", value=`${post.title}`)
+					li
+						h3 Slug
+						input(type="text", id="q_slug", value=`${post.slug}`)
+					li
+						h3 Post Body
+						div#q_content
+
+						script.
+							$(document).ready(function() {
+									
+								const data = !{JSON.stringify(post).replace(/<\//g, '<\\/')};
+
+								const htmlString = data.body;
+								console.log(htmlString);
+
+							    $('#q_content').summernote('code', htmlString);
+
+							});
+
+						p Add a section to the post
+						ul.list#content_block_list
+						ul.list.post_section_menu
+							li Wysiwyg
+							li Image
+							li Video			
+			.col-sm-4
+				h3 Categories
+				button.expand_addcatbox.btn Add a Category
+
+				.addcatbox
+					input#q_catname(placeholder="Category name...")
+					input#q_cat_description(placeholder="Category description...")
+					button#add_cat.btn Submit
+					#cats_err.error_box
+					#cats_success.success_box
+
+				ul.list.categories
+					each category in categories
+						li
+							if category.checked
+								input(type="checkbox", value=`${category.catid}`, checked)
+							else
+								input(type="checkbox", value=`${category.catid}`)
+							label #{category.catname}
+							ul.list
+								li
+									span.delbtn.deletecat(data-catid=`${category.catid}`) Delete
+								li
+									a Edit
+
+		p.btn(href="", id="update_btn") Update Post
+		p.btn(id="delete_btn") Delete
+		#error_box
+		#successBox
+	

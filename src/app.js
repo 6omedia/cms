@@ -21,7 +21,7 @@ app.set('views', __dirname + '/templates');
 
 /** Database stuff **/
 
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 // mongodb connection
 mongoose.connect("mongodb://localhost:27017/cms");
 var db = mongoose.connection;
@@ -46,7 +46,16 @@ app.use(function(req, res, next){
 
 /** Routes **/
 
-var routes = require('./routes/index');
+// main routes
+var routes = require('./routes/main.js');
 app.use('/', routes);
+
+// admin routes
+var admin_routes = require('./routes/admin.js');
+app.use('/admin', admin_routes);
+
+// api routes
+var api_routes = require('./routes/api.js');
+app.use('/admin/api', api_routes);
 
 app.listen(3000);

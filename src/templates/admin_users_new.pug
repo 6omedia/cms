@@ -1,0 +1,37 @@
+extends admin_layout
+
+block content
+	h1 Add a user
+	.form
+		.row
+			.col-sm-6
+				ul.list
+					li
+						label Full Name
+						input(type="text", id="q_name")
+					li
+						label Email
+						input(type="text", id="q_email")
+					li
+						label Password
+						input(type="password", id="q_password")
+					li
+						label Confirm Password
+						input(type="password", id="q_passwordconfirm")
+					li
+						label Is the User an Admin?
+						input(type="checkbox", id="q_admin")
+						#permissionsBox
+							h2 Permissions
+							ul.list
+								li
+									input(type="checkbox", value="manage_posts", id="perm1") 
+									label(for="perm1") Manage Posts
+								li
+									input(type="checkbox", value="manage_users", id="perm2") 
+									label(for="perm2") Manage Users
+
+
+				p.btn(href="", id="send_btn") Submit
+				#error_box
+				#successBox

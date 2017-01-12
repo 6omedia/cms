@@ -9,7 +9,12 @@ var UserSchema = new mongoose.Schema({
 		trim: true
 	},
 	password: String,
-	isadmin: Boolean
+	isSuperAdmin: Boolean,
+	isadmin: Boolean,
+	permissions: [{
+		manage_posts: Boolean,
+		manage_users: Boolean
+	}]
 });
 
 // authenicate input against database documents

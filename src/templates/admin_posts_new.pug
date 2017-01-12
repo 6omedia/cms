@@ -1,0 +1,59 @@
+extends admin_layout
+
+block content
+	#datablock(style="display: none", data-userid=`${user._id}`)
+
+	h1 Create a New Post
+	.form.postForm
+		.row
+			.col-sm-8
+				ul.list.postformList
+					li
+						h3 Title
+						input(type="text", id="q_title")
+					li
+						h3 Slug
+						input(type="text", id="q_slug")
+					li
+						h3 Post Body
+						div#q_content
+
+						script.
+							$(document).ready(function() {
+							    $('#q_content').summernote({
+							    	height: 300,
+							    });
+							});
+
+						p Add a section to the post
+						ul.list#content_block_list
+						ul.list.post_section_menu
+							li Wysiwyg
+							li Image
+							li Video			
+			.col-sm-4
+				h3 Categories
+				button.expand_addcatbox.btn Add a Category
+
+				.addcatbox
+					input#q_catname(placeholder="Category name...")
+					input#q_cat_description(placeholder="Category description...")
+					button#add_cat.btn Submit
+					#cats_err.error_box
+					#cats_success.success_box
+
+				ul.list.categories
+					each category in categories
+						li
+							input(type="checkbox", value=`${category._id}`)
+							label #{category.name}
+							ul.list
+								li
+									span.delbtn.deletecat(data-catid=`${category._id}`) Delete
+								li
+									a Edit
+
+		p.btn(href="", id="send_btn") Submit
+		#error_box
+		#successBox
+	

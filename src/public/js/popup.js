@@ -2,7 +2,7 @@ class Popup {
 
 	popUp(message){
 
-		let modal = '<div class="modal">';
+		let modal = '<div class="c_modal">';
 		modal += '<div class="box">';
 		modal += '<p>' + message + '</p>';
 		modal += '<button id="yes_btn">Yes</button>';
@@ -14,7 +14,7 @@ class Popup {
 
 		const thisClass = this;
 
-		$('.modal').on('click', function(e){
+		$('.c_modal').on('click', function(e){
 
 			if($(e.target).is('.box') || $(e.target).is('button')){
 	            e.preventDefault();
@@ -36,8 +36,8 @@ class Popup {
 	popDown(){
 
 		console.log('popdocdcsdwn');
-		$('.modal').remove();
-		$('.modal').off();
+		$('.c_modal').remove();
+		$('.c_modal').off();
 
 	}
 
