@@ -33,6 +33,12 @@ postsForm.sendBtn.on('click', function(){
 		const catArray = getCheckedCats();
 		const user_id = $('#datablock').data('userid');
 
+		let feat_img = '';
+		
+		if($('#featImg_container img').attr('src') != undefined){
+			feat_img = $('#featImg_container img').attr('src');
+		}
+
 		$.ajax({
 			url: '/admin/api/add_post',
 			type: 'POST',
@@ -43,6 +49,7 @@ postsForm.sendBtn.on('click', function(){
 				slug: postsForm.requiredFeilds[1].value,
 				body: postsForm.requiredFeilds[2].elem.summernote('code'),
 				categories: JSON.stringify(catArray),
+				feat_img: feat_img,
 				user_id: user_id
 			},
 			success: function(data)
@@ -86,6 +93,12 @@ postsForm.updateBtn.on('click', function(){
 
 		const catArray = getCheckedCats();
 
+		let feat_img = '';
+		
+		if($('#featImg_container img').attr('src') != undefined){
+			feat_img = $('#featImg_container img').attr('src');
+		}
+
 		$.ajax({
 			url: '/admin/api/update_post',
 			type: 'POST',
@@ -95,7 +108,8 @@ postsForm.updateBtn.on('click', function(){
 				postid: postid,
 				title: postsForm.requiredFeilds[0].value,
 				slug: postsForm.requiredFeilds[1].value,
-				categories: JSON.stringify(catArray)
+				categories: JSON.stringify(catArray),
+				feat_img: feat_img
 			},
 			success: function(data)
 			{
@@ -207,49 +221,6 @@ catsForm.sendBtn.on('click', function(){
 
 					$('.categories').prepend(newCat);
 
-					// window.location.reload();
-
-					// $.ajax({
-					// 	url: '/admin/api/get_cats',
-					// 	type: 'POST',
-					// 	// dataType: 'json',
-					// 	data:
-					// 	{
-					// 		name: catsForm.requiredFeilds[0].value,
-					// 		description: catsForm.requiredFeilds[1].value
-					// 	},
-					// 	success: function(data)
-					// 	{
-					// 		console.log(data);
-					// 		$('.categories').empty();
-							
-					// 		let string = '';
-
-					// 		for(let i=0; i<data.length; i++){
-
-					// 			string += '<li>';
-					// 			string += '<input type="checkbox">';
-					// 			string += '<label>' + data[i].name + '</label>';
-					// 			string += '<ul class="list">';
-					// 			string += '<li>';
-					// 			string += '<span class="delbtn deletecat" data-catid="' + data[i]._id + '">Delete</span>';
-					// 			string += '</li>';
-					// 			string += '<li>';
-					// 			string += '<a>Edit</a>';
-					// 			string += '</li>';
-					// 			string += '</ul>';
-					// 			string += '</li>';
-
-					// 		}
-
-					// 		$('.categories').append(string);
-					// 	},
-					// 	error: function(xhr, desc, err)
-					// 	{
-					// 		console.log(xhr, desc, err);
-					// 	}
-					// });
-
 				}else{
 					if(data.error){
 						// const displayError = makeErrorReadable(data.error);
@@ -294,4 +265,31 @@ $('body').on('click', '.deletecat', function(){
 
 	popup.popUp('Are you sure you want to delete this Category?');
 
+});
+
+function displayUploadedImg(imgLink){
+
+	const imgTag = '<img src="/static/uploads/' + imgLink + '">';
+	$('#featImg_container').append(imgTag);
+	$('#featImg_container > p').remove();
+	$('#upload_box').hide();
+
+}
+
+const imgUploader = new ImageUploader($('#upload-input'), $('#upload_btn'));
+
+imgUploader.fileInput.on('click', function(){
+	imgUploader.resetProgress();	
+});
+
+imgUploader.uploadBtn.on('click', function(){
+	imgUploader.uploadFiles(function(data){
+		displayUploadedImg(data.filename);
+	});
+});
+
+$('#remove_img').on('click', function(){
+	$(this).next().remove();
+	$('#upload_box').show();
+	imgUploader.resetProgress();
 });

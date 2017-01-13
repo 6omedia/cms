@@ -146,6 +146,12 @@ const forminfo = {
 				elem: $('#q_content'),
 				value: '',
 				required: false
+			},
+			{
+				feildName: 'Featured Image',
+				elem: $('#featImg_container img'),
+				value: '',
+				required: false
 			}
 		]
 	},

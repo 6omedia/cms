@@ -16,11 +16,23 @@ function requiresLogin(req, res, next){
 	}
 }
 
-function checkPermission(req, res, next){
+// function imgUpload(req, res, next){ 
 
+// 	if(req.session && req.session.userId){
 	
+// 		var uploading = multer({
+// 			// dest: __dirname + '../public/uploads/',
+// 			dest: '/static/public/uploads'
+// 		});
+// 		return next();
 	
-}
+// 	}else{
+// 		var err = new Error('You must be logged in to view this page');
+// 		err.status = 401;
+// 		res.render('error', {error: err});
+// 	}
+// }
 
 module.exports.loggedOut = loggedOut;
 module.exports.requiresLogin = requiresLogin;
+// module.exports.imgUpload = imgUpload;

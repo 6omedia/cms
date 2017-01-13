@@ -45,6 +45,7 @@ admin.get('/', mid.requiresLogin, function(req, res, next){
         if(user.isadmin){
           res.render('admin', {
             title: 'Admin',
+            user: user,
             fullname: user.fullname
           });
         }else{
@@ -56,6 +57,39 @@ admin.get('/', mid.requiresLogin, function(req, res, next){
 
 });
 
+function give_permission(user, permission, res, permitedFuction){
+
+	if(user.permissions.length > 0){
+
+		if(permission in user.permissions[0]){
+			if(user.permissions[0][permission]){
+
+				permitedFuction();
+			
+			}else{
+
+				res.status(401).render('admin_error', {
+					error_message: 'You don\'t have the correct permissions to access this page'
+				});
+			
+			}
+		}else{
+
+			res.status(401).render('admin_error', {
+				error_message: 'You don\'t have the correct permissions to access this page'
+			});
+
+		}
+
+	}else{
+
+		res.status(401).render('admin_error', {
+			error_message: 'You don\'t have the correct permissions to access this page'
+		});
+
+	}
+
+}
 
 admin.get('/posts', mid.requiresLogin, function(req, res, next){
 
@@ -68,20 +102,25 @@ admin.get('/posts', mid.requiresLogin, function(req, res, next){
         // check if admin
         if(user.isadmin){
 
-          Post.find({}, function(err, posts){
+        	give_permission(user, 'manage_posts', res, function(){
 
-            if(error){
-              next(error);
-            }else{
-              res.render('admin_posts', {
-                title: 'Posts',
-                fullname: user.fullname,
-                posts: posts,
-                admin_script: 'posts'
-              });
-            }
+        		Post.find({}, function(err, posts){
 
-          });
+		            if(error){
+		              next(error);
+		            }else{
+		              res.render('admin_posts', {
+		                title: 'Posts',
+                        user: user,
+		                fullname: user.fullname,
+		                posts: posts,
+		                admin_script: 'posts'
+		              });
+		            }
+
+		        });
+
+        	});
 
         }else{
             return res.redirect('/');
@@ -102,23 +141,28 @@ admin.get('/posts/new', mid.requiresLogin, function(req, res, next){
         // check if admin
         if(user.isadmin){
 
-            Category.find({}).sort({$natural:-1}).exec(function(error, categories){
+        	give_permission(user, 'manage_posts', res, function(){
 
-                if(error){
-                    next(error);
-                }else{
-                    
-                    res.render('admin_posts_new', {
-                        title: 'Create New Post',
-                        fullname: user.fullname,
-                        categories: categories,
-                        user: user, 
-                        admin_script: 'posts'
-                    });
+        		Category.find({}).sort({$natural:-1}).exec(function(error, categories){
 
-                }
+	                if(error){
+	                    next(error);
+	                }else{
+	                    
+	                    res.render('admin_posts_new', {
+	                        title: 'Create New Post',
+                            user: user,
+	                        fullname: user.fullname,
+	                        categories: categories,
+	                        user: user, 
+	                        admin_script: 'posts'
+	                    });
 
-            });
+	                }
+
+	            });
+
+        	});
 
         }else{
             return res.redirect('/');
@@ -140,36 +184,41 @@ admin.get('/posts/:id', mid.requiresLogin, function(req, res, next){
                 // check if admin
                     if(user.isadmin){
 
-                        Post.findOne({"_id": postid}, function(error, post){
+                    	give_permission(user, 'manage_posts', res, function(){
 
-                            if(error){
-                                console.log(error);
-                            }else{
+			        		Post.findOne({"_id": postid}, function(error, post){
 
-                                Category.find({}).sort({$natural:-1}).exec(function(error, categories){
+	                            if(error){
+	                               // console.log(error);
+	                            }else{
 
-                                    if(error){
-                                        next(error);
-                                    }else{
+	                                Category.find({}).sort({$natural:-1}).exec(function(error, categories){
 
-                                        const catarray = getCatsForPost(post, categories);
+	                                    if(error){
+	                                        next(error);
+	                                    }else{
 
-                                        res.render('admin_post_edit', {
-                                            title: 'Edit Post',
-                                            fullname: user.fullname,
-                                            post: post,
-                                            postid: postid,
-                                            categories: catarray,
-                                            admin_script: 'posts'
-                                        });
+	                                        const catarray = getCatsForPost(post, categories);
 
-                                    }
+	                                        res.render('admin_post_edit', {
+	                                            title: 'Edit Post',
+                                                user: user,
+	                                            fullname: user.fullname,
+	                                            post: post,
+	                                            postid: postid,
+	                                            categories: catarray,
+	                                            admin_script: 'posts'
+	                                        });
 
-                                });
+	                                    }
 
-                            }
+	                                });
 
-                        });
+	                            }
+
+	                        });
+
+			        	});
 
                 }else{
                     return res.redirect('/');
@@ -191,22 +240,27 @@ admin.get('/users', mid.requiresLogin, function(req, res, next){
         // check if admin
         if(user.isadmin){
 
-            User.find({}).sort({$natural:-1}).exec(function(error, users){
+        	give_permission(user, 'manage_users', res, function(){
 
-                if(error){
-                    next(error);
-                }else{
-                    
-                    res.render('admin_users', {
-                        title: 'Admin',
-                        fullname: user.fullname,
-                        users: users,
-                        admin_script: 'users'
-                    });
+        		User.find({}).sort({$natural:-1}).exec(function(error, users){
 
-                }
+	                if(error){
+	                    next(error);
+	                }else{
+	                    
+	                    res.render('admin_users', {
+	                        title: 'Admin',
+                            user: user,
+	                        fullname: user.fullname,
+	                        users: users,
+	                        admin_script: 'users'
+	                    });
 
-            });
+	                }
+
+	            });
+
+        	});
 
         }else{
           return res.redirect('/');
@@ -228,11 +282,14 @@ admin.get('/users/new', mid.requiresLogin, function(req, res, next){
         // check if admin
         if(user.isadmin){
 
-            res.render('admin_users_new', {
-                title: 'Admin',
-                fullname: user.fullname,
-                admin_script: 'users'
-            });
+        	give_permission(user, 'manage_users', res, function(){
+        		res.render('admin_users_new', {
+	                title: 'Admin',
+                  user: user,
+	                fullname: user.fullname,
+	                admin_script: 'users'
+	            });
+        	});
 
         }else{
           return res.redirect('/');
@@ -243,27 +300,72 @@ admin.get('/users/new', mid.requiresLogin, function(req, res, next){
 
 });
 
-admin.get('/visitors', mid.requiresLogin, function(req, res, next){
 
-  User.findById(req.session.userId)
-    .exec(function(error, user){
-      if(error){
-        next(error);
-      }else{
+admin.get('/users/:id', mid.requiresLogin, function(req, res, next){
 
-        // check if admin
-        if(user.isadmin){
-          res.render('admin_visitors', {
-            title: 'Admin',
-            fullname: user.fullname
-          });
-        }else{
-          return res.redirect('/');
-        }
+    User.findById(req.session.userId)
+        .exec(function(error, user){
+                if(error){
+                    next(error);
+                }else{
+                // check if admin
+                    if(user.isadmin){
 
-      }
-    });
+                    	give_permission(user, 'manage_users', res, function(){
+
+                    		let userid = req.params.id;
+
+			        		User.findOne({"_id": userid}, function(error, edUser){
+
+	                            if(error){
+	                                // console.log(error);
+	                            }else{
+
+	                                res.render('admin_user_edit', {
+                                        title: 'Edit User',
+                                        user: user,
+                                        fullname: user.fullname,
+                                        edUser: edUser,
+                                        userid: userid,
+                                        admin_script: 'users'
+                                    });
+
+	                            }
+
+	                        });
+
+			        	});
+
+                }else{
+                    return res.redirect('/');
+                }
+
+            }
+        });
+
 });
+
+// admin.get('/visitors', mid.requiresLogin, function(req, res, next){
+
+//   User.findById(req.session.userId)
+//     .exec(function(error, user){
+//       if(error){
+//         next(error);
+//       }else{
+
+//         // check if admin
+//         if(user.isadmin){
+//           res.render('admin_visitors', {
+//             title: 'Admin',
+//             fullname: user.fullname
+//           });
+//         }else{
+//           return res.redirect('/');
+//         }
+
+//       }
+//     });
+// });
 
 
 /*****************************************************************
@@ -290,6 +392,7 @@ admin.get('/businesses', mid.requiresLogin, function(req, res, next){
             }else{
               res.render('admin_businesses', {
                 title: 'Admin',
+                user: user,
                 fullname: user.fullname,
                 businesses: businesses,
                 admin_script: 'business'
@@ -330,6 +433,7 @@ admin.get('/businesses/new', mid.requiresLogin, function(req, res, next){
         if(user.isadmin){
           res.render('admin_businesses_new', {
             title: 'Add New Business',
+            user: user,
             fullname: user.fullname,
             services: services,
             industries: industries,
@@ -370,6 +474,7 @@ admin.get('/businesses/:id', mid.requiresLogin, function(req, res, next){
           Business.findOne({"_id": businessid}, function(error, business){
             res.render('admin_businesses_edit', {
               title: 'Edit Business',
+              user: user,
               fullname: user.fullname,
               business: business,
               services: services,

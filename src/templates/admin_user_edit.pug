@@ -1,0 +1,67 @@
+extends admin_layout
+
+block content
+	div(id="datablock", style="display: none", data-userid=`${userid}`)
+	h1 Edit, #{edUser.fullname}
+	.form.postForm
+		.row
+			.col-sm-6
+				ul.list
+					li
+						label Full Name
+						input(type="text", id="q_name", value=`${edUser.fullname}`)
+					li
+						label Email
+						input(type="text", id="q_email", value=`${edUser.email}`)
+					li
+						label Change Password
+						input(type="checkbox", id="q_changepassword")
+						#passwordBox
+							label New Password
+							input(type="text", id="q_password")
+							label Confirm New Password
+							input(type="text", id="q_passwordconfirm")
+					li
+						label Is the User an Admin?
+
+						if edUser.isadmin
+							input(type="checkbox", id="q_admin" checked)
+						else
+							input(type="checkbox", id="q_admin")
+
+						#permissionsBox
+							h2 Permissions
+							ul.list
+								if edUser.permissions.length > 0
+									li
+										if edUser.permissions[0].manage_posts !== 'undefined'
+											if edUser.permissions[0].manage_posts
+												input(type="checkbox", value="manage_posts", id="perm1", checked)
+											else
+												input(type="checkbox", value="manage_posts", id="perm1") 
+										label(for="perm1") Manage Posts
+									li
+										if edUser.permissions[0].manage_users !== 'undefined'
+											if edUser.permissions[0].manage_users
+												input(type="checkbox", value="manage_users", id="perm2", checked) 
+											else
+												input(type="checkbox", value="manage_users", id="perm2")
+										label(for="perm2") Manage Users
+								else
+									li
+										input(type="checkbox", value="manage_posts", id="perm1") 
+										label(for="perm1") Manage Posts
+									li
+										input(type="checkbox", value="manage_users", id="perm2")
+										label(for="perm2") Manage Users
+						if edUser.isadmin
+							script.
+								$('#permissionsBox').show();
+
+			
+
+		p.btn(href="", id="update_btn") Update User
+		p.btn(id="delete_btn") Delete
+		#error_box
+		#successBox
+	

@@ -2,15 +2,33 @@
 var express = require('express');
 var main = express.Router();
 var User = require('../models/user');
+var Post = require('../models/post');
+var Category = require('../models/category');
+var Business = require('../models/business');
 var mid = require('../middleware');
 
 // define the home page route
 // Home
 
 main.get('/', function(req, res){
-  const path = req.path;
-  res.locals.path = path;
-  res.render('index', {title: 'My Local'});
+    const path = req.path;
+    res.locals.path = path;
+
+    Post.find({}, function(err, posts){
+
+        if(err){
+            next(err);
+        }else{
+            res.render('index', 
+                {
+                    title: 'Website',
+                    posts: posts
+                }
+            );
+        }
+
+    });
+
 });
 
 // Profile
@@ -54,10 +72,9 @@ main.post('/login', function(req, res, next){
 
               // check if admin
               if(user.isadmin){
-                res.render('admin', {
-                  title: 'Profile',
-                  fullname: user.fullname
-                });
+ 
+                res.redirect('/admin');
+
               }else{
                 return res.redirect('/profile');
               }
@@ -98,7 +115,11 @@ main.post('/signup', function(req, res, next){
       fullname: req.body.fullName,
       email: req.body.email,
       password: req.body.password,
-      isadmin: false
+      isadmin: false,
+      permissions: [{
+        manage_posts: false,
+        manage_users: false
+      }]
     }
 
     // add to mongo db

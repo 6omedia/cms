@@ -1,12 +1,20 @@
 class Popup {
 
-	popUp(message){
+	popUp(message, customform){
 
 		let modal = '<div class="c_modal">';
 		modal += '<div class="box">';
 		modal += '<p>' + message + '</p>';
-		modal += '<button id="yes_btn">Yes</button>';
-		modal += '<button id="no_btn">No</button>';
+
+		console.log(customform);
+
+		if(customform !== undefined){
+			modal += customform;
+		}else{
+			modal += '<button id="yes_btn">Yes</button>';
+			modal += '<button id="no_btn">No</button>';
+		}
+
 		modal += '</div>';
 		modal += '</div>';
 
@@ -16,7 +24,7 @@ class Popup {
 
 		$('.c_modal').on('click', function(e){
 
-			if($(e.target).is('.box') || $(e.target).is('button')){
+			if($(e.target).is('.box') || $(e.target).is('button') || $(e.target).is('input')){
 	            e.preventDefault();
 	            return;
 	        }
@@ -30,6 +38,10 @@ class Popup {
 		$('#no_btn').on('click', function(){
 			thisClass.negativeFunc();
 		});
+
+		// if(customform !== undefined){
+		// 	this.positiveFunc();
+		// }
 
 	}
 

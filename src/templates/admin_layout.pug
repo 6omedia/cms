@@ -4,12 +4,13 @@ body
 	.side_section
 		a(href="/admin/businesses")
 			h2 Businesses
-		a(href="/admin/posts")
-			h2 Posts
-		a(href="/admin/users")
-			h2 Users
-		a(href="/admin/visitors")
-			h2 Visitors
+			if user.permissions[0].manage_posts
+				a(href="/admin/posts")
+					h2 Posts
+			if user.permissions[0].manage_users
+				a(href="/admin/users")
+					h2 Users
+			
 
 	.main_section
 		block content
@@ -24,6 +25,7 @@ body
 			script(src='/static/js/admin_business.js')
 		when 'posts'
 			script(src='/static/lib/summernote/summernote.js')
+			script(src='/static/js/image_uploader.js')
 			script(src='/static/js/admin_posts.js')
 		when 'users'
 			script(src='/static/js/admin_users.js')

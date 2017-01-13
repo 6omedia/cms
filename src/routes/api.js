@@ -1,10 +1,15 @@
 
 var express = require('express');
 var api = express.Router();
+var bcrypt = require('bcryptjs');
 var User = require('../models/user');
 var Post = require('../models/post');
 var Category = require('../models/category');
 var Business = require('../models/business');
+
+var path = require('path');
+var formidable = require('formidable');
+var fs = require('fs');
 
 var mid = require('../middleware');
 
@@ -25,11 +30,12 @@ api.post('/add_post', mid.requiresLogin, function(req, res, next){
 
             const post = new Post(
                 {
-                  title: req.body.title,
-                  slug: req.body.slug,
-                  body: req.body.body,
-                  categories: JSON.parse(req.body.categories),
-                  user_id: req.body.user_id
+					title: req.body.title,
+					slug: req.body.slug,
+					body: req.body.body,
+					categories: JSON.parse(req.body.categories),
+					feat_img: req.body.feat_img,
+					user_id: req.body.user_id
                 }
             );
 
@@ -47,7 +53,7 @@ api.post('/add_post', mid.requiresLogin, function(req, res, next){
             });
         
         }else{
-          res.send('error');
+      		res.send('error');
         }
 
       }
@@ -77,7 +83,8 @@ api.post('/update_post', mid.requiresLogin, function(req, res, next){
               $set: {
                 title: req.body.title,
                 slug: req.body.slug,
-                categories: JSON.parse(req.body.categories)
+                categories: JSON.parse(req.body.categories),
+                feat_img: req.body.feat_img
               }
             },
             function(err, affected, resp){
@@ -307,6 +314,155 @@ api.post('/add_user', function(req, res, next){
     });
 
 });
+
+api.post('/update_user', mid.requiresLogin, function(req, res, next){
+
+  User.findById(req.session.userId)
+    .exec(function(error, user){
+      if(error){
+        next(error);
+      }else{
+        // check if admin
+        if(user.isadmin){
+
+            let data = {};
+            data.success = '0';
+            const userid = req.body.userid;
+
+            const permissions = JSON.parse(req.body.permissions);
+
+            let updateObj = {};
+
+            const changepassword = req.body.changepassword;
+
+            if(changepassword == "true"){
+
+                let hashedPassword = '';
+
+				bcrypt.hash(req.body.password, 5, function(err, hash){
+
+					if(err){
+						data.error = err;
+						res.send(data);
+					}
+
+					updateObj = {
+		               	$set: {
+		                	fullname: req.body.fullname,
+		                    email: req.body.email,
+		                    password: hash,
+		                    isadmin: req.body.isadmin,
+		                    permissions: [{
+				                manage_posts: permissions[0].checked,
+				                manage_users: permissions[1].checked
+			              	}]
+		                }
+		            };
+
+		            User.update({"_id": userid}, updateObj, function(err, affected, resp){
+
+						if(err){
+							data.error = err;
+							res.send(data);
+						}else{
+							data.success = '1';
+							res.send(data);
+						}
+					});
+
+				});
+
+            }else{
+
+            	updateObj = {
+	               	$set: {
+	                	fullname: req.body.fullname,
+	                    email: req.body.email,
+	                    isadmin: req.body.isadmin,
+	                    permissions: [{
+			                manage_posts: permissions[0].checked,
+			                manage_users: permissions[1].checked
+		              	}]
+	                }
+	            };
+
+	            User.update({"_id": userid}, updateObj, function(err, affected, resp){
+
+					if(err){
+						data.error = err;
+						res.send(data);
+					}else{
+						// console.log(affected);
+						data.success = '1';
+						res.send(data);
+					}
+				});
+
+            }
+        
+        }else{
+            res.send('error');
+        }
+
+      }
+    });
+
+});
+
+// Image uploads
+
+api.post('/upload', mid.requiresLogin, function(req, res, next){
+
+  User.findById(req.session.userId)
+    .exec(function(error, user){
+      if(error){
+        next(error);
+      }else{
+        // check if admin
+        if(user.isadmin){
+
+	        let data = {};
+	        data.success = '0';
+
+	        // create an incoming form object
+			var form = new formidable.IncomingForm();
+
+			// specify that we want to allow the user to upload multiple files in a single request
+			form.multiples = true;
+
+			// store all uploads in the /uploads directory
+			form.uploadDir = path.join(__dirname, '../public/uploads');
+
+			// every time a file has been uploaded successfully,
+			// rename it to it's orignal name
+			form.on('file', function(field, file) {
+				fs.rename(file.path, path.join(form.uploadDir, file.name));
+				data.filename = file.name;
+			});
+
+			// log any errors that occur
+			form.on('error', function(err) {
+				console.log('An error has occured: \n' + err);
+				res.send('An error has occured: \n' + err);
+			});
+
+			// once all the files have been uploaded, send a response to the client
+			form.on('end', function() {
+				res.send(data);
+				res.end('success');
+			});
+
+			// parse the incoming request containing the form data
+			form.parse(req);
+        
+        }else{
+          res.send('error');
+        }
+
+      }
+    });
+});
+
 
 /****************************************************************
 

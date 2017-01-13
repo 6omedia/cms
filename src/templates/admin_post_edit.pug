@@ -23,7 +23,6 @@ block content
 								const data = !{JSON.stringify(post).replace(/<\//g, '<\\/')};
 
 								const htmlString = data.body;
-								console.log(htmlString);
 
 							    $('#q_content').summernote('code', htmlString);
 
@@ -36,6 +35,25 @@ block content
 							li Image
 							li Video			
 			.col-sm-4
+				h3 Featured Image
+				#featImg_container
+					if post.feat_img == ''
+						p No Featured Image Set
+					else
+						#remove_img
+							p Remove Featured Img
+						img(src=`${post.feat_img}`)
+				.panel.panel-default#upload_box
+						.panel-body
+							span(class="glyphicon glyphicon-cloud-upload")
+							.progress
+								.progress-bar(role="progressbar")
+							input(id="upload-input" type="file" name="uploads[]" multiple="multiple")
+							button.btn#upload_btn(type="button") Upload File
+				if post.feat_img != ''
+					script.
+						$('#upload_box').hide();
+
 				h3 Categories
 				button.expand_addcatbox.btn Add a Category
 

@@ -16,7 +16,7 @@ var PostsSchema = new mongoose.Schema(
 		user_id: String,
 		body: String,
 		categories: Array,
-		img_link: String
+		feat_img: String
 	}
 );
 
