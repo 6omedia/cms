@@ -5,7 +5,6 @@ var bcrypt = require('bcryptjs');
 var User = require('../models/user');
 var Post = require('../models/post');
 var Category = require('../models/category');
-var Business = require('../models/business');
 
 var path = require('path');
 var formidable = require('formidable');
@@ -180,24 +179,6 @@ api.post('/delete', mid.requiresLogin, function(req, res, next){
                                 data.success = '1';
                                 res.send(data);
                               }
-                            });
-
-                        break;
-                        case 'business':
-
-                            Business.remove({ "_id" : req.body.itemid }, function(err, removed){
-                                data.removed = removed;
-                                if(err){
-                                    data.error = err;
-                                    res.send(data);
-                                }else{
-
-                                    if(removed){
-                                        data.success = '1';
-                                    }
-                                    
-                                    res.send(data);
-                                }
                             });
 
                         break;
@@ -462,129 +443,5 @@ api.post('/upload', mid.requiresLogin, function(req, res, next){
       }
     });
 });
-
-
-/****************************************************************
-
-	Business Api that needs to be deleted from cms template
-
-*****************************************************************/
-
-api.post('/add_business', mid.requiresLogin, function(req, res, next){
-
-  User.findById(req.session.userId)
-    .exec(function(error, user){
-      if(error){
-        next(error);
-      }else{
-        // check if admin
-        if(user.isadmin){
-
-          let data = {};
-          data.success = '0';
-
-          const business = new Business(
-            {
-              name: req.body.name,
-              website: req.body.website,
-              phone: req.body.phone,
-              email: req.body.email,
-              fladdress: req.body.fladdress,
-              town: req.body.town,
-              postcode: req.body.postcode,
-              industry: req.body.industry,
-              openinghours: req.body.openinghours,
-              serv1: req.body.serv1,
-              serv2: req.body.serv2,
-              serv3: req.body.serv3,
-              facebook: req.body.facebook,
-              twitter: req.body.twitter,
-              instagram: req.body.instagram,
-              youtube: req.body.youtube,
-              linkedin: req.body.linkedin
-            }
-          );
-
-          //save model to MongoDB
-          business.save(function (err) {
-
-            if(err) {
-              data.error = err;
-              return;
-            }
-            
-            data.success = '1';
-            res.send(data);
-          
-          });
-        
-        }else{
-          res.send('error');
-        }
-
-      }
-    });
-});
-
-api.post('/update_business', mid.requiresLogin, function(req, res, next){
-
-  User.findById(req.session.userId)
-    .exec(function(error, user){
-      if(error){
-        next(error);
-      }else{
-        // check if admin
-        if(user.isadmin){
-
-          let data = {};
-          data.success = '0';
-          const businessid = req.body.businessid;
-
-          Business.update(
-            {
-              "_id": businessid
-            }, 
-            {
-              $set: {
-                name: req.body.name,
-                website: req.body.website,
-                phone: req.body.phone,
-                email: req.body.email,
-                fladdress: req.body.fladdress,
-                town: req.body.town,
-                postcode: req.body.postcode,
-                industry: req.body.industry,
-                openinghours: req.body.openinghours,
-                serv1: req.body.serv1,
-                serv2: req.body.serv2,
-                serv3: req.body.serv3,
-                facebook: req.body.facebook,
-                twitter: req.body.twitter,
-                instagram: req.body.instagram,
-                youtube: req.body.youtube,
-                linkedin: req.body.linkedin
-              }
-            },
-            function(err, affected, resp){
-              if(err){
-                data.error = err;
-                return;
-              }else{
-                console.log(affected);
-                data.success = '1';
-                res.send(data);
-              }
-            }
-          );
-        
-        }else{
-          res.send('error');
-        }
-
-      }
-    });
-});
-
-
 
 module.exports = api;

@@ -2,8 +2,7 @@ include ./partials/_admin_head.pug
 include ./partials/_admin_header.pug
 body
 	.side_section
-		a(href="/admin/businesses")
-			h2 Businesses
+		if user.permissions.length > 0
 			if user.permissions[0].manage_posts
 				a(href="/admin/posts")
 					h2 Posts
@@ -21,8 +20,6 @@ body
 	script(src='/static/js/admin.js')
 
 	case admin_script
-		when 'business'
-			script(src='/static/js/admin_business.js')
 		when 'posts'
 			script(src='/static/lib/summernote/summernote.js')
 			script(src='/static/js/image_uploader.js')
