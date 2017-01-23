@@ -5,7 +5,7 @@ const forminfo = {
 		deleteBtn: $('#delete_btn'),
 		errorBox: $('#error_box'),
 		successBox: $('#successBox'),
-		spinImg: '/img/spin.png',
+		spinImg: $('#spin'),
 		requiredFeilds: [
 			{
 				feildName: 'name',
@@ -125,7 +125,7 @@ const forminfo = {
 		updateBtn: $('#update_btn'),
 		errorBox: $('#error_box'),
 		successBox: $('#successBox'),
-		spinImg: '/img/spin.png',
+		spinImg: $('#spin'),
 		requiredFeilds: [
 			{
 				feildName: 'title',
@@ -160,7 +160,7 @@ const forminfo = {
 		updateBtn: $('#update_cats_btn'),
 		errorBox: $('#cats_err'),
 		successBox: $('#cats_success'),
-		spinImg: '/img/spin.png',
+		spinImg: $('#spincats'),
 		requiredFeilds: [
 			{
 				feildName: 'Category Name',
@@ -182,7 +182,7 @@ const forminfo = {
 		updateBtn: $('#update_btn'),
 		errorBox: $('#error_box'),
 		successBox: $('#successBox'),
-		spinImg: '/img/spin.gif',
+		spinImg: $('#spin'),
 		requiredFeilds: [
 			{
 				feildName: 'Full Name',

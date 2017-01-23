@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5878c49fc62fbd359051a043"},"fullname":"admin","email":"admin@admin","password":"$2a$05$PPd8SDx8ISE8vj.wEg/7Zu5v/r2h2PexmIUP9mFPrnIIJdXvimw4W","isadmin":true,"permissions":[{"_id":{"$oid":"5878c5b5c62fbd359051a045"},"manage_users":true,"manage_posts":true}],"__v":0,"admin":true,"isSuperAdmin":true}

@@ -14,19 +14,21 @@ body
 	.main_section
 		block content
 
-	script(src='/static/js/popup.js')
-	script(src='/static/js/form.js')
-	script(src='/static/js/forminfo.js')
-	script(src='/static/js/admin.js')
+	script(src='/static/js/admin/popup.js')
+	script(src='/static/js/admin/form.js')
+	script(src='/static/js/admin/forminfo.js')
+	script(src='/static/js/admin/admin.js')
 
 	case admin_script
 		when 'posts'
 			script(src='/static/lib/summernote/summernote.js')
-			script(src='/static/js/image_uploader.js')
-			script(src='/static/js/admin_posts.js')
+			script(src='/static/js/admin/image_uploader.js')
+			script(src='//code.jquery.com/ui/1.12.1/jquery-ui.js')
+			script(src='/static/lib/content_blocks/content_blocks.js')
+			script(src='/static/js/admin/admin_posts.js')
 		when 'users'
-			script(src='/static/js/admin_users.js')
+			script(src='/static/js/admin/admin_users.js')
 		when 'visitors'
-			script(src='/static/js/admin_visitors.js')
+			script(src='/static/js/admin/admin_visitors.js')
 
 

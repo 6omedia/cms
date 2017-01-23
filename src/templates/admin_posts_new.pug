@@ -16,21 +16,24 @@ block content
 						input(type="text", id="q_slug")
 					li
 						h3 Post Body
+						.toggleBox
+							label Use Content Blocks?
+							input(id="cb_toggle", type="checkbox")
 						div#q_content
-
 						script.
 							$(document).ready(function() {
 							    $('#q_content').summernote({
 							    	height: 300,
 							    });
 							});
-
-						p Add a section to the post
-						ul.list#content_block_list
-						ul.list.post_section_menu
-							li Wysiwyg
-							li Image
-							li Video			
+						#cb
+							p Add a section to the post
+							ul.list#content_block_list
+							ul.list.post_section_menu
+								//- li Plain text
+								//- li html
+								//- li Image
+								//- li Video
 			.col-sm-4
 				h3 Featured Image
 				#featImg_container
@@ -41,7 +44,7 @@ block content
 					.panel-body
 						span(class="glyphicon glyphicon-cloud-upload")
 						.progress
-							.progress-bar(role="progressbar")
+							#feat_img_prog.progress-bar(role="progressbar")
 						input(id="upload-input" type="file" name="uploads[]" multiple="multiple")
 						button.btn#upload_btn(type="button") Upload File
 
@@ -67,6 +70,6 @@ block content
 									a Edit
 
 		p.btn(href="", id="send_btn") Submit
+		img#spin(src="/static/img/spin.gif")
 		#error_box
 		#successBox
-	

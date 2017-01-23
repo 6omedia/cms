@@ -147,6 +147,11 @@ admin.get('/posts/new', mid.requiresLogin, function(req, res, next){
 	                if(error){
 	                    next(error);
 	                }else{
+
+                        // const options = {
+                        //     content_blocks: false,
+                        //     track_visitors: false
+                        // }
 	                    
 	                    res.render('admin_posts_new', {
 	                        title: 'Create New Post',

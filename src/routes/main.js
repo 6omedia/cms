@@ -151,4 +151,16 @@ main.get('/logout', function(req, res, next){
   }
 });
 
+main.get('/posts/:slug', function(req, res, next){
+  
+    const slug = req.params.slug;
+
+    Post.find({slug: slug}).exec(function(err, post){
+        res.render('single_post', {
+            post: post
+        });
+    });
+
+});
+
 module.exports = main;

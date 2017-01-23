@@ -61,11 +61,13 @@ class Form {
 	disableSubmit(){
 		this.sendBtn.hide();
 		this.updateBtn.hide();
+		this.spinImg.show();
 	}
 
 	enableSubmit(){
 		this.sendBtn.show();
 		this.updateBtn.show();
+		this.spinImg.hide();
 	}
 
 	isFormValid(requiredFeilds){

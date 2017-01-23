@@ -15,25 +15,58 @@ block content
 						input(type="text", id="q_slug", value=`${post.slug}`)
 					li
 						h3 Post Body
+						.toggleBox
+							label Use Content Blocks?
+							if post.body.substring(0, 3) != '[{"'
+								input(id="cb_toggle", type="checkbox")
+							else
+								input(id="cb_toggle", type="checkbox" checked)
 						div#q_content
+						#cb
+							p Add a section to the post
+							ul.list#content_block_list
+								if post.body.substring(0, 3) == '[{"'
+									each block in JSON.parse(post.body)
+										li
+											.contentBlock(data-content_type=`${block.blocktype}`)
+												h4 #{block.blocktype}
+												.remove x
+												case block.blocktype
+													when 'Plain Text'
+														textarea #{block.blockvalue}
+													when 'Video'
+														input(type="text")
+													when 'Image'
+														if block.blockvalue != ''
+															img(src=`${block.blockvalue}`)
+															input(type="file")
+															.progress
+																.progress-bar
+														else
+															img(src="" style="display: none")
+															input(type="file")
+															.progress
+																.progress-bar
+													when 'HTML'
+														textarea.htmlEdit #{block.blockvalue}
+							ul.list.post_section_menu
+						if post.body.substring(0, 3) != '[{"'
+							script.
+								$(document).ready(function() {
+										
+									const data = !{JSON.stringify(post).replace(/<\//g, '<\\/')};
+									const htmlString = data.body;
+								    $('#q_content').summernote('code', htmlString);
 
-						script.
-							$(document).ready(function() {
-									
-								const data = !{JSON.stringify(post).replace(/<\//g, '<\\/')};
+								});
+						else
+							script.
+								$(document).ready(function() {
+										
+									$('#cb').show();
 
-								const htmlString = data.body;
-
-							    $('#q_content').summernote('code', htmlString);
-
-							});
-
-						p Add a section to the post
-						ul.list#content_block_list
-						ul.list.post_section_menu
-							li Wysiwyg
-							li Image
-							li Video			
+								});
+								
 			.col-sm-4
 				h3 Featured Image
 				#featImg_container
@@ -47,7 +80,7 @@ block content
 						.panel-body
 							span(class="glyphicon glyphicon-cloud-upload")
 							.progress
-								.progress-bar(role="progressbar")
+								#feat_img_prog.progress-bar(role="progressbar")
 							input(id="upload-input" type="file" name="uploads[]" multiple="multiple")
 							button.btn#upload_btn(type="button") Upload File
 				if post.feat_img != ''
@@ -80,6 +113,7 @@ block content
 
 		p.btn(href="", id="update_btn") Update Post
 		p.btn(id="delete_btn") Delete
+		img#spin(src="/static/img/spin.gif")
 		#error_box
 		#successBox
 	

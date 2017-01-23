@@ -27,6 +27,8 @@ api.post('/add_post', mid.requiresLogin, function(req, res, next){
             let data = {};
             data.success = '0';
 
+            // console.log('The string: ', req.body.body);
+
             const post = new Post(
                 {
 					title: req.body.title,
@@ -82,6 +84,7 @@ api.post('/update_post', mid.requiresLogin, function(req, res, next){
               $set: {
                 title: req.body.title,
                 slug: req.body.slug,
+                body: req.body.body,
                 categories: JSON.parse(req.body.categories),
                 feat_img: req.body.feat_img
               }
@@ -392,7 +395,9 @@ api.post('/update_user', mid.requiresLogin, function(req, res, next){
 
 // Image uploads
 
-api.post('/upload', mid.requiresLogin, function(req, res, next){
+api.post('/upload/:subfolder', mid.requiresLogin, function(req, res, next){
+
+    const subFolder = req.params.subfolder;
 
   User.findById(req.session.userId)
     .exec(function(error, user){
@@ -402,39 +407,39 @@ api.post('/upload', mid.requiresLogin, function(req, res, next){
         // check if admin
         if(user.isadmin){
 
-	        let data = {};
-	        data.success = '0';
+            let data = {};
+            data.success = '0';
 
-	        // create an incoming form object
-			var form = new formidable.IncomingForm();
+            // create an incoming form object
+            var form = new formidable.IncomingForm();
 
-			// specify that we want to allow the user to upload multiple files in a single request
-			form.multiples = true;
+            // specify that we want to allow the user to upload multiple files in a single request
+            form.multiples = true;
 
-			// store all uploads in the /uploads directory
-			form.uploadDir = path.join(__dirname, '../public/uploads');
+            // store all uploads in the /uploads directory
+            form.uploadDir = path.join(__dirname, '../public/uploads/' + subFolder);
 
-			// every time a file has been uploaded successfully,
-			// rename it to it's orignal name
-			form.on('file', function(field, file) {
-				fs.rename(file.path, path.join(form.uploadDir, file.name));
-				data.filename = file.name;
-			});
+            // every time a file has been uploaded successfully,
+            // rename it to it's orignal name
+            form.on('file', function(field, file) {
+                fs.rename(file.path, path.join(form.uploadDir, file.name));
+                data.filename = file.name;
+            });
 
-			// log any errors that occur
-			form.on('error', function(err) {
-				console.log('An error has occured: \n' + err);
-				res.send('An error has occured: \n' + err);
-			});
+            // log any errors that occur
+            form.on('error', function(err) {
+                console.log('An error has occured: \n' + err);
+                res.send('An error has occured: \n' + err);
+            });
 
-			// once all the files have been uploaded, send a response to the client
-			form.on('end', function() {
-				res.send(data);
-				res.end('success');
-			});
+            // once all the files have been uploaded, send a response to the client
+            form.on('end', function() {
+                res.send(data);
+                res.end('success');
+            });
 
-			// parse the incoming request containing the form data
-			form.parse(req);
+            // parse the incoming request containing the form data
+            form.parse(req);
         
         }else{
           res.send('error');

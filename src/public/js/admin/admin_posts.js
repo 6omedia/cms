@@ -39,6 +39,41 @@ postsForm.sendBtn.on('click', function(){
 			feat_img = $('#featImg_container img').attr('src');
 		}
 
+		// content blocks
+
+		const useContentBlocks = $('#cb_toggle').prop('checked');
+		let theBody = '';
+
+		if(useContentBlocks){
+
+			const contentBlocks = $('#content_block_list li .contentBlock');
+
+			let cbArray = [];
+
+			contentBlocks.each(function(){
+
+				let blocktype = $(this).data('content_type');
+				let blockvalue = '';
+
+				if(blocktype == 'Image'){
+					blockvalue = $($(this).children()[2]).attr('src');
+				}else{
+					blockvalue = $($(this).children()[2]).val();
+				}
+
+				const cbObj = {
+					blocktype: blocktype,
+					blockvalue: blockvalue
+				};
+				cbArray.push(cbObj);
+			});
+
+			theBody = JSON.stringify(cbArray); // cbArray stringified
+	
+		}else{
+			theBody = postsForm.requiredFeilds[2].elem.summernote('code');
+		}
+
 		$.ajax({
 			url: '/admin/api/add_post',
 			type: 'POST',
@@ -47,7 +82,7 @@ postsForm.sendBtn.on('click', function(){
 			{
 				title: postsForm.requiredFeilds[0].value,
 				slug: postsForm.requiredFeilds[1].value,
-				body: postsForm.requiredFeilds[2].elem.summernote('code'),
+				body: theBody,
 				categories: JSON.stringify(catArray),
 				feat_img: feat_img,
 				user_id: user_id
@@ -81,8 +116,6 @@ postsForm.sendBtn.on('click', function(){
 
 });
 
-
-
 // Updateing a post
 
 postsForm.updateBtn.on('click', function(){
@@ -99,6 +132,38 @@ postsForm.updateBtn.on('click', function(){
 			feat_img = $('#featImg_container img').attr('src');
 		}
 
+		const useContentBlocks = $('#cb_toggle').prop('checked');
+		let theBody = '';
+
+		if(useContentBlocks){
+
+			const contentBlocks = $('#content_block_list li .contentBlock');
+
+			let cbArray = [];
+
+			contentBlocks.each(function(){
+				let blocktype = $(this).data('content_type');
+				let blockvalue = '';
+
+				if(blocktype == 'Image'){
+					blockvalue = $($(this).children()[2]).attr('src');
+				}else{
+					blockvalue = $($(this).children()[2]).val();
+				}
+
+				const cbObj = {
+					blocktype: blocktype,
+					blockvalue: blockvalue
+				};
+				cbArray.push(cbObj);
+			});
+
+			theBody = JSON.stringify(cbArray); // cbArray stringified
+	
+		}else{
+			theBody = postsForm.requiredFeilds[2].elem.summernote('code');
+		}
+
 		$.ajax({
 			url: '/admin/api/update_post',
 			type: 'POST',
@@ -108,6 +173,7 @@ postsForm.updateBtn.on('click', function(){
 				postid: postid,
 				title: postsForm.requiredFeilds[0].value,
 				slug: postsForm.requiredFeilds[1].value,
+				body: theBody,
 				categories: JSON.stringify(catArray),
 				feat_img: feat_img
 			},
@@ -269,17 +335,17 @@ $('body').on('click', '.deletecat', function(){
 
 function displayUploadedImg(imgLink){
 
-	const imgTag = '<img src="/static/uploads/' + imgLink + '">';
+	const imgTag = '<img src="/static/uploads/posts/' + imgLink + '">';
 	$('#featImg_container').append(imgTag);
 	$('#featImg_container > p').remove();
 	$('#upload_box').hide();
 
 }
 
-const imgUploader = new ImageUploader($('#upload-input'), $('#upload_btn'));
+const imgUploader = new ImageUploader($('#upload-input'), $('#upload_btn'), $('#feat_img_prog'), 'posts');
 
 imgUploader.fileInput.on('click', function(){
-	imgUploader.resetProgress();	
+	imgUploader.resetProgress();
 });
 
 imgUploader.uploadBtn.on('click', function(){
@@ -292,4 +358,47 @@ $('#remove_img').on('click', function(){
 	$(this).next().remove();
 	$('#upload_box').show();
 	imgUploader.resetProgress();
+	$('#upload-input').val('');
 });
+
+
+// Content Type Toggle
+
+$('#cb_toggle').on('click', function(){
+
+	if($(this).prop('checked')){
+		$('#q_content').summernote('destroy');
+		$('#q_content').hide();
+		$('#cb').show();
+	}else{
+		$('#q_content').summernote({
+	    	height: 300
+	    });
+	    $('#cb').hide();
+	}
+
+});
+
+$('.contentBlock .remove').on('click', function(){
+	$(this).parent().parent().remove();
+});
+
+$('.htmlEdit').keydown(function (e){
+    var keycode1 = (e.keyCode ? e.keyCode : e.which);
+    if (keycode1 == 0 || keycode1 == 9) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+});
+
+const controls = new CbControls($('#content_block_list'), $('.post_section_menu'));
+
+const types = [
+	'Plain Text',
+	'HTML',
+	'Image',
+	'Video'
+];
+
+controls.createButtons(types);
+
