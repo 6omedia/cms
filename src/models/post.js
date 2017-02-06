@@ -13,11 +13,11 @@ var PostsSchema = new mongoose.Schema(
 			required: true,
 			trim: true
 		},
+		date: Date,
 		user_id: String,
 		body: String,
 		categories: Array,
-		feat_img: String,
-		date: Date
+		feat_img: String
 	}
 );
 

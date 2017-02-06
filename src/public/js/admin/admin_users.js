@@ -1,11 +1,25 @@
 // toggle admin permissions
 
-$('#q_admin').on('click', function(){
+// $('#q_admin').on('click', function(){
 
-	if($(this).prop('checked')){
+// 	if($(this).prop('checked')){
+// 		$('#permissionsBox').slideDown(200);
+// 	}else{
+// 		$('#permissionsBox').slideUp(200);
+// 	}
+
+// });
+
+$('#userRole_selected').on('change', function(){
+
+	if($(this).val() == 'admin'){
+
 		$('#permissionsBox').slideDown(200);
+
 	}else{
+
 		$('#permissionsBox').slideUp(200);
+
 	}
 
 });
@@ -49,7 +63,7 @@ userForm.sendBtn.on('click', function(){
 
 			});
 
-			const isAdmin = $('#q_admin').prop('checked');
+			// const isAdmin = $('#q_admin').prop('checked');
 
 			$.ajax({
 				url: '/admin/api/add_user',
@@ -60,7 +74,8 @@ userForm.sendBtn.on('click', function(){
 					fullname: userForm.requiredFeilds[0].value,
 					email: userForm.requiredFeilds[1].value,
 					password: userForm.requiredFeilds[2].value,
-					isadmin: isAdmin,
+					user_role: userForm.requiredFeilds[4].value,
+					// isadmin: isAdmin,
 					permissions: JSON.stringify(permArray)
 				},
 				success: function(data)
@@ -113,14 +128,14 @@ userForm.updateBtn.on('click', function(){
 
 			let perObj = {
 				permission: $(this).val(),
-				checked: $(this).is(':checked')					
+				checked: $(this).is(':checked')		
 			}
 
 			permArray.push(perObj);
 
 		});
 
-		const isAdmin = $('#q_admin').prop('checked');
+		// const isAdmin = $('#q_admin').prop('checked');
 
 		$.ajax({
 			url: '/admin/api/update_user',
@@ -133,7 +148,8 @@ userForm.updateBtn.on('click', function(){
 				email: userForm.requiredFeilds[1].value,
 				changepassword: changepassword,
 				password: userForm.requiredFeilds[2].value,
-				isadmin: isAdmin,
+				user_role: userForm.requiredFeilds[4].value,
+				// isadmin: isAdmin,
 				permissions: JSON.stringify(permArray)
 			},
 			success: function(data)

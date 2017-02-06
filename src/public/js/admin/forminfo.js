@@ -211,6 +211,13 @@ const forminfo = {
 				value: '',
 				error: 'Passwords are empty or do not match',
 				required: true
+			},
+			{
+				feildName: 'User Role',
+				elem: $('#userRole_selected'),
+				value: '',
+				error: 'Select User Role',
+				required: true
 			}
 		]
 	}

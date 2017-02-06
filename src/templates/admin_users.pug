@@ -10,7 +10,7 @@ block content
 		each user in users
 			li
 				a(href=`/admin/users/${user._id}`) #{user.fullname}
-				if user.isadmin
+				if user.user_role == 'admin' || user.user_role == 'super_admin'
 					span.isadmin Admin
 				ul.list.operations
 					li

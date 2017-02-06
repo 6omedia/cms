@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var UserSchema = new mongoose.Schema({
 	fullname: String,
+	ip: {
+		type: String,
+		trim: true
+	},
 	email: {
 		type: String,
 		unique: true,
@@ -9,6 +13,12 @@ var UserSchema = new mongoose.Schema({
 		trim: true
 	},
 	password: String,
+	user_role: {
+		type: String,
+		required: true,
+	    default: 'visitor',
+		trim: true
+	},
 	isSuperAdmin: Boolean,
 	isadmin: Boolean,
 	permissions: [{

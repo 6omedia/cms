@@ -85,7 +85,8 @@ postsForm.sendBtn.on('click', function(){
 				body: theBody,
 				categories: JSON.stringify(catArray),
 				feat_img: feat_img,
-				user_id: user_id
+				user_id: user_id,
+				date: new Date()
 			},
 			success: function(data)
 			{

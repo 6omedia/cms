@@ -22,12 +22,27 @@ block content
 							label Confirm New Password
 							input(type="text", id="q_passwordconfirm")
 					li
-						label Is the User an Admin?
+						label User Role
+						select(id="userRole_selected")
+							if edUser.user_role == ''
+								option(value="" selected) - select a user role -
+							else
+								option(value="") - select a user role -
 
-						if edUser.isadmin
-							input(type="checkbox", id="q_admin" checked)
-						else
-							input(type="checkbox", id="q_admin")
+							if edUser.user_role == 'admin' || edUser.user_role == 'super_admin'
+								option(value="admin" selected) Admin
+							else
+								option(value="admin") Admin
+
+							if edUser.user_role == 'subscriber'
+								option(value="subscriber" selected) Subscriber
+							else
+								option(value="subscriber") Subscriber
+
+							if edUser.user_role == 'visitor'
+								option(value="visitor" selected) Visitor
+							else
+								option(value="visitor") Visitor
 
 						#permissionsBox
 							h2 Permissions
@@ -54,7 +69,7 @@ block content
 									li
 										input(type="checkbox", value="manage_users", id="perm2")
 										label(for="perm2") Manage Users
-						if edUser.isadmin
+						if edUser.user_role == 'admin'
 							script.
 								$('#permissionsBox').show();
 
