@@ -2,18 +2,30 @@
 	Initial Setup
 ******************************/
 
-Upload json files in the init data to json folder
+1)
 
-then there will be one admin user.
+	Upload json files in the init data to json folder
 
-Email: admin@admin
-password: 123
+	then there will be one admin user.
 
-Add User
-mongoimport --db zmot --collection users --file c:/dev/node/zmot/users.json
-Once logged in for the first time 
-Change the password of admin@admin
-also in app.js change the database name
+	Email: admin@admin
+	password: 123
+
+	Add User
+	mongoimport --db zmot --collection users --file c:/dev/node/zmot/users.json
+	Once logged in for the first time 
+	Change the password of admin@admin
+	also in app.js change the database name
+
+2)
+	
+	Set correct database in app.js
+
+3) 
+
+	Set whether or not file uploads use aws in public/js/admin.js
+	const useAws = true;
+	set aws settings in routes/api.js
 
 things to improve...
 

@@ -70,32 +70,43 @@
 
 		attachImgUploader(img, prog, fileInput){
 
-			const uploader = new ImageUploader(fileInput, '', prog, 'posts');
+			const uploader = new ImageUploader(fileInput, '', prog, 'posts', this.aws);
 
 			uploader.fileInput.on('click', function(){
 				uploader.resetProgress();	
 			});
 
 			uploader.fileInput.on('change', function(){
-				uploader.uploadFiles(function(data){
 
-					img.attr('src', '/static/uploads/posts/' + data.filename).show();
+				if(uploader.awsObj == false){
 
-				});
+					uploader.uploadLocalFiles(function(data){
+						img.attr('src', '/static/uploads/posts/' + data.filename).show();
+					});
+
+				}else{
+
+					uploader.uploadFile(function(awsUrl, filename){
+						img.attr('src', awsUrl).show();
+					});
+
+				}
+
 			});
 
 		}
 
-		constructor(ul, type){
+		constructor(ul, type, aws){
 			this.ul = ul;
 			this.type = type;
+			this.aws = aws;
 		}
 	}
 
 	class CbControls {
 
 		addContentBlock(contentBlock){
-			const cBlock = new ContentBlock(this.cbList, contentBlock);
+			const cBlock = new ContentBlock(this.cbList, contentBlock, this.aws);
 			cBlock.render();
 		}
 
@@ -121,6 +132,7 @@
 		}
 
 		attachImgUploaders(){
+			const aws = this.aws;
 			const contentBlocks = this.cbList.children();
 			contentBlocks.each(function(){
 				let div = $(this).children();
@@ -128,28 +140,39 @@
 
 					const img = div.children('img');
 
-					const uploader = new ImageUploader(div.children('input'), '', div.children('.progress'), 'posts');
+					const uploader = new ImageUploader(div.children('input'), '', div.children('.progress'), 'posts', aws);
 
 					uploader.fileInput.on('click', function(){
 						uploader.resetProgress();	
 					});
 
 					uploader.fileInput.on('change', function(){
-						uploader.uploadFiles(function(data){
 
-							img.attr('src', '/static/uploads/posts/' + data.filename).show();
+						if(uploader.awsObj == false){
 
-						});
+							uploader.uploadLocalFiles(function(data){
+								img.attr('src', '/static/uploads/posts/' + data.filename).show();
+							});
+
+						}else{
+
+							uploader.uploadFile(function(awsUrl, filename){
+								img.attr('src', awsUrl).show();
+							});
+
+						}
+
 					});
 				}
 			});
 		}
 
-		constructor(cbList, ul){
+		constructor(cbList, ul, aws){
 			this.contentBlocks = [];
 			this.cbList = cbList;
 			this.ul = ul;
 			this.cbList.sortable();
 			this.attachImgUploaders();
+			this.aws = aws;
 		}
 	}

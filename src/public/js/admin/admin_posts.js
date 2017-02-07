@@ -1,5 +1,6 @@
 
 function getCheckedCats() {
+
 	let catArray = [];
 	const catlis = $('.categories li input');
 
@@ -12,6 +13,7 @@ function getCheckedCats() {
 	});
 
 	return catArray;
+
 }
 
 $('#q_title').on('blur', function(){
@@ -336,23 +338,37 @@ $('body').on('click', '.deletecat', function(){
 
 function displayUploadedImg(imgLink){
 
-	const imgTag = '<img src="/static/uploads/posts/' + imgLink + '">';
+	const imgTag = '<img src="' + imgLink + '">';
 	$('#featImg_container').append(imgTag);
 	$('#featImg_container > p').remove();
 	$('#upload_box').hide();
 
 }
 
-const imgUploader = new ImageUploader($('#upload-input'), $('#upload_btn'), $('#feat_img_prog'), 'posts');
+const imgUploader = new ImageUploader($('#upload-input'), $('#upload_btn'), $('#feat_img_prog'), 'posts', useAws);
+
+console.log('vdvdsvds', useAws);
 
 imgUploader.fileInput.on('click', function(){
 	imgUploader.resetProgress();
 });
 
 imgUploader.uploadBtn.on('click', function(){
-	imgUploader.uploadFiles(function(data){
-		displayUploadedImg(data.filename);
-	});
+
+	if(imgUploader.awsObj == false){
+
+		imgUploader.uploadLocalFiles(function(data){
+			displayUploadedImg('/static/uploads/posts/' + data.filename);
+		});
+
+	}else{
+
+		imgUploader.uploadFile(function(awsUrl, filename){
+			displayUploadedImg(awsUrl);
+		});
+
+	}
+
 });
 
 $('#remove_img').on('click', function(){
@@ -392,7 +408,7 @@ $('.htmlEdit').keydown(function (e){
     }
 });
 
-const controls = new CbControls($('#content_block_list'), $('.post_section_menu'));
+const controls = new CbControls($('#content_block_list'), $('.post_section_menu'), useAws);
 
 const types = [
 	'Plain Text',

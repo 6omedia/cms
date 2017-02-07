@@ -1,4 +1,9 @@
 
+// Global Variables
+
+const useAws = true;
+
+
 function slugify(string){
 
 	let slug = string.replace(/ /g, '-').toLowerCase();
