@@ -46,6 +46,22 @@ app.use(function(req, res, next){
 
 /** Routes **/
 
+// CMS
+
+// main routes
+var cms_routes = require('./routes/cms/cms_main.js');
+app.use('/', cms_routes);
+
+// admin routes
+var cms_admin_routes = require('./routes/cms/cms_admin.js');
+app.use('/admin', cms_admin_routes);
+
+// api routes
+var cms_api_routes = require('./routes/cms/cms_api.js');
+app.use('/admin/api', cms_api_routes);
+
+// EXTENDED
+
 // main routes
 var routes = require('./routes/main.js');
 app.use('/', routes);

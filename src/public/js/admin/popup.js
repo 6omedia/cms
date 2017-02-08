@@ -6,8 +6,6 @@ class Popup {
 		modal += '<div class="box">';
 		modal += '<p>' + message + '</p>';
 
-		console.log(customform);
-
 		if(customform !== undefined){
 			modal += customform;
 		}else{

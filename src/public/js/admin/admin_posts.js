@@ -347,8 +347,6 @@ function displayUploadedImg(imgLink){
 
 const imgUploader = new ImageUploader($('#upload-input'), $('#upload_btn'), $('#feat_img_prog'), 'posts', useAws);
 
-console.log('vdvdsvds', useAws);
-
 imgUploader.fileInput.on('click', function(){
 	imgUploader.resetProgress();
 });
