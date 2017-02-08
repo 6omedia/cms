@@ -9,43 +9,6 @@ var mid = require('../../middleware');
 // define the home page route
 // Home
 
-cms_main.get('/', function(req, res){
-    const path = req.path;
-    res.locals.path = path;
-
-    Post.find({}, function(err, posts){
-
-        if(err){
-            next(err);
-        }else{
-            res.render('index', 
-                {
-                    title: 'Website',
-                    posts: posts
-                }
-            );
-        }
-
-    });
-
-});
-
-// Profile
-
-cms_main.get('/profile', mid.requiresLogin, function(req, res, next){
-  User.findById(req.session.userId)
-    .exec(function(error, user){
-      if(error){
-        next(error);
-      }else{
-        res.render('profile', {
-          title: 'Profile',
-          fullname: user.fullname
-        });
-      }
-    });
-});
-
 /** User Routes and backend **/
 
 // login for user or admin assign user a permission
