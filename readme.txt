@@ -19,7 +19,21 @@
 
 2)
 	
-	Set correct database in app.js
+	Create a config.js in the folders root and add the following with the correct
+	credentials...
+
+		module.exports = {
+
+			get_config_vars: function(){
+				return {
+					env_database: "mongodb://localhost:27017/{db_name}",
+					env_bucket: '6omedia',
+					env_aws_access_key: '',
+					env_aws_secret_key: ''
+				}
+			}
+
+		};
 
 3) 
 
