@@ -3,7 +3,7 @@ var express = require('express');
 var cms_main = express.Router();
 var User = require('../../models/user');
 var Post = require('../../models/post');
-var Category = require('../../models/category');
+var Taxonomy = require('../../models/taxonomy');
 var mid = require('../../middleware');
 
 // define the home page route
@@ -33,7 +33,7 @@ cms_main.post('/login', function(req, res, next){
             }else{
 
               // check if admin
-              if(user.isadmin){
+              if(user.user_role == 'admin' || user.user_role == 'super_admin'){
  
                 res.redirect('/admin');
 

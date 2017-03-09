@@ -6,13 +6,12 @@ const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
 const ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
-// const awsBucket = process.env.S3_BUCKET_NAME;
 
 var cms_api = express.Router();
 var bcrypt = require('bcryptjs');
 var User = require('../../models/user');
 var Post = require('../../models/post');
-var Category = require('../../models/category');
+var Taxonomy = require('../../models/taxonomy');
 
 var path = require('path');
 var formidable = require('formidable');
@@ -35,9 +34,10 @@ cms_api.post('/add_post', mid.checkUserAdmin, function(req, res, next){
             title: req.body.title,
             slug: req.body.slug,
             body: req.body.body,
-            categories: JSON.parse(req.body.categories),
+            taxonomies: JSON.parse(req.body.categories),
             feat_img: req.body.feat_img,
             user_id: req.body.user_id,
+            user_name: req.body.user_name,
             date: req.body.date
         }
     );
@@ -72,7 +72,7 @@ cms_api.post('/update_post', mid.checkUserAdmin, function(req, res, next){
                 title: req.body.title,
                 slug: req.body.slug,
                 body: req.body.body,
-                categories: JSON.parse(req.body.categories),
+                taxonomies: JSON.parse(req.body.categories),
                 feat_img: req.body.feat_img
             }
         },
@@ -81,7 +81,6 @@ cms_api.post('/update_post', mid.checkUserAdmin, function(req, res, next){
                 data.error = err;
                 res.send(data);
             }else{
-                // console.log(affected);
                 data.success = '1';
                 res.send(data);
             }
@@ -90,7 +89,34 @@ cms_api.post('/update_post', mid.checkUserAdmin, function(req, res, next){
 
 });
 
-// Categories
+// cms_api.post('/add_taxonomy', mid.checkUserAdmin, function(req, res, next){
+
+//     let data = {};
+//     data.success = '0';
+    
+//     const taxonomy = new Taxonomy(
+//         {
+//           taxonomy_name: req.body.name,
+//           taxonomy_description: req.body.description
+//         }
+//     );
+
+//     //save model to MongoDB
+//     taxonomy.save(function (err, taxonomy) {
+
+//         if(err) {
+//             data.error = err;
+//             res.send(data);
+//         }else{
+//             data.success = '1';
+//             data.catname = taxonomy.taxonomy_name; 
+//             data.catid = taxonomy._id;
+//             res.send(data);
+//         }
+
+//     });
+
+// });
 
 cms_api.post('/add_cat', mid.checkUserAdmin, function(req, res, next){
 
@@ -121,6 +147,63 @@ cms_api.post('/add_cat', mid.checkUserAdmin, function(req, res, next){
 
 });
 
+cms_api.post('/add_term', mid.checkUserAdmin, function(req, res, next){
+
+    let data = {};
+    data.success = '0';
+
+    Taxonomy.findOneAndUpdate(
+        {"taxonomy_name": req.body.taxonomy}, 
+        {
+            $push: {
+                taxonomy_terms: {
+                    term_name: req.body.name,
+                    description: req.body.description,
+                    parent: req.body.parent
+                }
+            }
+        },
+        { new: true }
+    ).then(function (term) {
+        // console.log('TERM: ', term.taxonomy_terms);
+
+        data.catid = term.taxonomy_terms[term.taxonomy_terms.length - 1]._id;
+        data.catname = term.taxonomy_terms[term.taxonomy_terms.length - 1].term_name;
+        data.success = '1';
+
+        res.send(data);
+    });
+
+    // Taxonomy.update(
+    //     {
+    //         "taxonomy_name": "Categories"
+    //     }, 
+    //     {
+    //         $push: {
+    //             taxonomy_terms: {
+    //                 term_name: req.body.name,
+    //                 description: req.body.description,
+    //                 parent: req.body.parent
+    //             }
+    //         }
+    //     },
+    //     function(err, affected, resp){
+
+    //         if(err){
+    //             data.error = err;
+    //             res.send(data);
+    //         }else{
+    //             if(affected.nModified){
+    //                 data.catid = termId;
+    //                 data.name = req.body.name,
+    //                 data.success = '1';
+    //             }
+    //             res.send(data);
+    //         }
+    //     }
+    // );
+
+});
 
 cms_api.post('/delete', mid.checkUserAdmin, function(req, res, next){
 
@@ -142,9 +225,9 @@ cms_api.post('/delete', mid.checkUserAdmin, function(req, res, next){
             });
 
         break;
-        case 'category':
+        case 'taxonomy':
 
-            Category.remove({ "_id" : req.body.itemid }, function(err, removed){
+            Taxonomy.remove({ "_id" : req.body.itemid }, function(err, removed){
                 data.removed = removed;
                 if(err){
                     data.error = err;
@@ -158,6 +241,33 @@ cms_api.post('/delete', mid.checkUserAdmin, function(req, res, next){
                     res.send(data);
                 }
             });
+
+        break;
+        case 'term':
+
+            // http://stackoverflow.com/questions/14244767/trying-to-remove-a-subdocument-in-mongoose-gives-me-an-internal-mongoose-error
+
+            Taxonomy.findOneAndUpdate(
+                {taxonomy_name: req.body.taxonomy_name}, 
+                {$pull: 
+                    {
+                        taxonomy_terms: {
+                            _id: req.body.itemid
+                        }
+                    }
+                },
+                function(err, org) {
+                    // org contains the updated doc
+                    if(err){
+                        data.error = err;
+                        res.send(data);
+                    }else{
+                        data.success = '1';
+                        res.send(data);
+                    }
+
+                }
+            );
 
         break;
         case 'user':
@@ -368,7 +478,7 @@ cms_api.post('/upload/:subfolder', mid.checkUserAdmin, function(req, res, next){
     form.multiples = true;
 
     // store all uploads in the /uploads directory
-    form.uploadDir = path.join(__dirname, '../public/uploads/' + subFolder);
+    form.uploadDir = path.join(__dirname, '../../public/uploads/' + subFolder);
 
     const fuid = uuid.v4();
     // console.log(test);

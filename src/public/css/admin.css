@@ -113,12 +113,37 @@ header .list li a {
     min-height: 1000px;
     float: left;
     background: #334369;
-    padding: 60px 15px 15px 15px;
+    padding: 60px 0px 15px 0px;
     position: fixed;
 }
 
+.side_section h1 {
+    color: #ffffff;
+    font-size: 26px;
+    background: #4a5f9e;
+    margin: 0px;
+    padding: 10px 15px;
+}
+
+.side_section li {
+    padding: 10px 15px;
+    font-size: 18px;
+}
+
+/*.side_section h2 {
+    color: #c7cfe0;
+}*/
+
 .side_section a {
 	color: #c7cfe0;
+}
+
+.side_taxonomies {
+    border-top: solid 2px #c7cfe0;
+}
+
+.side_taxonomies h2 {
+    margin-top: 10px;
 }
 
 .main_section {
@@ -263,7 +288,8 @@ header .list li a {
 
 /* Post Page */
 
-.postForm input {
+.postForm input,
+.postForm select {
 	width: 100%;
 	padding: 5px;
 }
@@ -289,13 +315,22 @@ header .list li a {
     display: none;
 }
 
-.addcatbox input {
+.addcatbox input,
+.addcatbox select {
     font-size: 16px;
     margin-bottom: 5px;
 }
 
 .addcatbox button {
 	font-size: 16px;
+}
+
+.addcatbox label {
+    width: 100%;
+}
+
+.addcatbox select {
+
 }
 
 .expand_addcatbox {
@@ -308,6 +343,11 @@ header .list li a {
     margin-left: 20px;
 }
 */
+
+.catsSpin {
+    display: none;
+}
+
 .categories {
 	margin-top: 10px;
 }
@@ -318,7 +358,8 @@ header .list li a {
 }
 
 .categories input,
-.categories label {
+.categories label,
+.categories select {
 	width: auto;
 	vertical-align: middle;
 	margin: 0px;
@@ -459,4 +500,48 @@ header .list li a {
 #spin {
     display: none;
     width: 30px;
+}
+
+.term_list {
+    /*column-count: 3;
+    column-gap: 10px;*/
+    margin-top: 20px;
+}
+
+.termBox li {
+    margin-bottom: 10px;
+}
+
+.termBox input,
+.termBox select,
+.termBox textarea {
+    width: 220px;
+}
+
+.x {
+    background: #7d0000;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.term_list li .x {
+    float: left;
+}
+
+.term_list li p {
+    display: inline-block;
+}
+
+.term_list span {
+    font-weight: bold;
+    width: 130px;
+    float: left;
+    background: #bbbec7;
+    margin-right: 10px;
+    display: inline-block;
+    padding: 0px 0px;
 }

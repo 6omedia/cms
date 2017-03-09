@@ -26,7 +26,7 @@
 
 			get_config_vars: function(){
 				return {
-					env_database: "mongodb://localhost:27017/{db_name}",
+					env_database: "mongodb://{username}:{password}@localhost:27017/{dbname}",
 					env_bucket: '6omedia',
 					env_aws_access_key: '',
 					env_aws_secret_key: ''
@@ -42,6 +42,64 @@
 	set aws settings in routes/api.js
 
 things to improve...
+
+	Small Things
+		- Slugify needs to encode special character ? and stuff...
+		- Edit taxonomy name
+		- .sort({date: 'descending'}) on posts
+
+	Medium Things
+		- popular posts (a count on each page view)
+		- pagination (Do this on cms first)
+
+	Big Things
+		- Add post types (branch off from cms.. maybe new project called Blog CMS)
+
+
+///// Adding new post type /////
+
+1. Add new model in models
+2. Add...
+
+	var PostType = require('../models/{postType}');
+
+	... in routes/main.js
+		   routes/admin.js
+		   routes/api.js
+
+3. Add to side menu in admin layout
+4. Setup routes in admin.js
+	/postTypes
+	/postType/new
+	/postType/:id
+5. Add Templates
+	admin_{posttype}.pug
+	admin_{posttype}_new.pug
+	admin_{posttype}_edit.pug
+6. In admin_layout.pug add at the bottom where the scripts are called...
+	when 'postType'
+			script(src='/static/js/admin/admin_{postType}.js')
+7. Add to forminfo.js
+
+
+
+... add permissions
+
+/////////////// TO DO //////////////////
+
+- Add username to posts and videos
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*******************************
 	User Roles
@@ -71,5 +129,34 @@ VISITOR:
 
 
 
-  
+/***********************************************
 
+	MongoDB users setup
+
+************************************************/  
+
+use admin
+
+db.createUser(
+  {
+    user: "mongoadmin",
+    pwd: "mongoadmin",
+    roles: [
+    	{ role: 'root', db: "admin"}
+    ]
+  }
+)
+
+// login as mongoadmin...
+
+use cms
+
+db.createUser(
+  {
+    user: "mongoadmin",
+    pwd: "mongoadmin",
+    roles: [
+    	{ role: 'root', db: "admin"}
+    ]
+  }
+)

@@ -1,7 +1,7 @@
 extends admin_layout
 
 block content
-	#datablock(style="display: none", data-userid=`${user._id}`)
+	#datablock(style="display: none", data-userid=`${user._id}`, data-username=`${user.fullname}`)
 
 	h1 Create a New Post
 	.form.postForm
@@ -48,26 +48,7 @@ block content
 						input(id="upload-input" type="file" name="uploads[]" multiple="multiple")
 						button.btn#upload_btn(type="button") Upload File
 
-				h3 Categories
-				button.expand_addcatbox.btn Add a Category
-
-				.addcatbox
-					input#q_catname(placeholder="Category name...")
-					input#q_cat_description(placeholder="Category description...")
-					button#add_cat.btn Submit
-					#cats_err.error_box
-					#cats_success.success_box
-
-				ul.list.categories
-					each category in categories
-						li
-							input(type="checkbox", value=`${category._id}`)
-							label #{category.name}
-							ul.list
-								li
-									span.delbtn.deletecat(data-catid=`${category._id}`) Delete
-								li
-									a Edit
+				include ./partials/_taxonomy-category-new
 
 		p.btn(href="", id="send_btn") Submit
 		img#spin(src="/static/img/spin.gif")

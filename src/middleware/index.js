@@ -1,5 +1,6 @@
 
 var User = require('../models/user');
+var dateFormat = require('dateformat');
 
 function loggedOut(req, res, next){
 	if(req.session && req.session.userId){
@@ -17,25 +18,6 @@ function requiresLogin(req, res, next){
 		res.render('error', {error: err});
 	}
 }
-
-// function imgUpload(req, res, next){ 
-
-// 	if(req.session && req.session.userId){
-	
-// 		var uploading = multer({
-// 			// dest: __dirname + '../public/uploads/',
-// 			dest: '/static/public/uploads'
-// 		});
-// 		return next();
-	
-// 	}else{
-// 		var err = new Error('You must be logged in to view this page');
-// 		err.status = 401;
-// 		res.render('error', {error: err});
-// 	}
-
-// }
-
 
 function checkUserAdmin(req, res, next){
 
@@ -70,22 +52,24 @@ function checkUserAdmin(req, res, next){
 }
 
 
-function getCatsForPost(post, categories){
+function getCatsForPost(postCats, categories){
+
     let catarray = [];
-                                    
+                                   
     for(let i=0; i<categories.length; i++){
 
         let checked = false;
 
-        for(let j=0; j<post.categories.length; j++){
-            if(categories[i]._id == post.categories[j]){
+        for(let j=0; j<postCats.length; j++){
+
+            if(categories[i]._id == postCats[j]){
                 checked = true;
             }
         }
 
         let catObj = {
             catid: categories[i]._id,
-            catname: categories[i].name,
+            catname: categories[i].term_name,
             checked: checked
         };
         catarray.push(catObj);
@@ -128,14 +112,32 @@ function give_permission(user, permission, res, permitedFuction){
 
 }
 
+function formatPostDates(posts){
 
+	for(let i=0; i<posts.length; i++){
+        // dateFormat.masks.hammerTime = 'HH:MM! "Can\'t touch this!"';
+        posts[i].formatedDate = dateFormat(posts[i].date, "mmmm dS, yyyy");
+	}
 
+}
 
+function allTitleCase(inStr){ 
+	return inStr.replace(/\w\S*/g, 
+	function(tStr) { 
+		return tStr.charAt(0).toUpperCase() + tStr.substr(1).toLowerCase(); 
+	}); 
+}
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 module.exports.loggedOut = loggedOut;
 module.exports.requiresLogin = requiresLogin;
 module.exports.checkUserAdmin = checkUserAdmin;
 module.exports.getCatsForPost = getCatsForPost;
 module.exports.give_permission = give_permission;
+module.exports.formatPostDates = formatPostDates;
+module.exports.capitalizeFirstLetter = capitalizeFirstLetter;
+module.exports.allTitleCase = allTitleCase;
 // module.exports.imgUpload = imgUpload;

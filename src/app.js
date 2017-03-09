@@ -35,7 +35,16 @@ fs.stat('config.js', function(err, stat) {
 
 	mongoose.Promise = global.Promise;
 	// mongodb connection
-	mongoose.connect(process.env.MONGODB_URI);
+	mongoose.connect(process.env.MONGODB_URI, {uri_decode_auth: true}, function(err, db) {
+	
+		if(err){
+			console.log('ERROR ', err);
+		}else{
+			console.log('YEAH ', db);
+		}
+
+	});
+
 	var db = mongoose.connection;
 
 	// mongo error

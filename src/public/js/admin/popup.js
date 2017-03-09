@@ -2,24 +2,38 @@ class Popup {
 
 	popUp(message, customform){
 
-		let modal = '<div class="c_modal">';
-		modal += '<div class="box">';
-		modal += '<p>' + message + '</p>';
+		const thisClass = this;
+
+		let modal = $('<div>', {"class": "c_modal"});
+		let box = $('<div>', {"class": "box"});
+		let msg = $('<p>').html(message);
+
+		let yesBtn = $('<button>', {"class": "yesBtn"}).html('yes').on('click', function(){
+						thisClass.positiveFunc();
+					});
+
+		let noBtn = $('<button>', {"class": "noBtn"}).html('no').on('click', function(){
+						thisClass.negativeFunc();
+					});
+
+		box.append(msg);
 
 		if(customform !== undefined){
-			modal += customform;
+
+			box.append(customform);
+
 		}else{
-			modal += '<button id="yes_btn">Yes</button>';
-			modal += '<button id="no_btn">No</button>';
+		
+			box.append(yesBtn);
+			box.append(noBtn);
+
 		}
 
-		modal += '</div>';
-		modal += '</div>';
+		modal.append(box);
 
 		$('body').append(modal);
 
-		const thisClass = this;
-
+		
 		$('.c_modal').on('click', function(e){
 
 			if($(e.target).is('.box') || $(e.target).is('button') || $(e.target).is('input')){
@@ -30,16 +44,9 @@ class Popup {
 			thisClass.popDown();
 		});
 
-		$('#yes_btn').on('click', function(){
-			thisClass.positiveFunc();
-		});
-		$('#no_btn').on('click', function(){
-			thisClass.negativeFunc();
-		});
-
-		// if(customform !== undefined){
-		// 	this.positiveFunc();
-		// }
+		if(customform !== undefined){
+			this.positiveFunc();
+		}
 
 	}
 

@@ -1,0 +1,40 @@
+extends admin_layout
+
+block content
+	#datablock(style="display: none", data-userid=`${user._id}`, data-taxonomy=`${taxonomy.taxonomy_name}`)
+
+	h1 #{taxonomy.taxonomy_name}
+	div#all_terms
+		ul.list.termBox
+			li
+				label Name
+				input#q_term_name(placeholder="Name...")
+			li
+				label Description
+				textarea#q_term_description(placeholder="Description...")
+			li
+				label Parent
+				select#q_term_parent
+					option(value="0") None
+					each term in taxonomy.taxonomy_terms
+						option(value=`${term.term_name}`) #{term.term_name}
+			buttom#add_term.btn Add
+		#term_err.error_box
+		#term_success.success_box
+	img#spin(src="/static/img/spin.gif")
+	ul.list.term_list
+		each term in taxonomy.taxonomy_terms
+			li 
+				p(data-termid=`${term._id}`).x x
+				span #{term.parent}
+				p #{term.term_name}
+
+
+
+
+
+							
+	//- p.btn(href="", id="send_btn") Submit
+	//- 	img#spin(src="/static/img/spin.gif")
+	//- 	#error_box
+	//- 	#successBox

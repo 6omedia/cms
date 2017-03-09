@@ -1,338 +1,125 @@
 
-function getCheckedCats() {
+const addUrl = '/admin/api/add_post';
+const updateUrl = '/admin/api/update_post';
 
-	let catArray = [];
-	const catlis = $('.categories li input');
-
-	catlis.each(function(){
-
-		if($(this).is(':checked')){
-			catArray.push($(this).val());
+const formInfo = {
+	sendBtn: $('#send_btn'),
+	updateBtn: $('#update_btn'),
+	errorBox: $('#error_box'),
+	successBox: $('#successBox'),
+	spinImg: $('#spin'),
+	requiredFeilds: [
+		{
+			feildName: 'title',
+			elem: $('#q_title'),
+			value: '',
+			error: 'Title required',
+			required: true
+		},
+		{
+			feildName: 'slug',
+			elem: $('#q_slug'),
+			value: '',
+			error: 'Slug required',
+			required: true
+		},
+		{
+			feildName: 'content',
+			elem: $('#q_content'),
+			value: '',
+			required: false
+		},
+		{
+			feildName: 'Featured Image',
+			elem: $('#featImg_container img'),
+			value: '',
+			required: false
 		}
-
-	});
-
-	return catArray;
-
+	]
 }
 
-$('#q_title').on('blur', function(){
-	const slug = slugify($(this).val());
-	$('#q_slug').val(slug);
-});
+const postForm = new Form(formInfo);
 
-$('#q_slug').on('blur', function(){
-	const slug = slugify($('#q_slug').val());
-	$('#q_slug').val(slug);
-});
+const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, '', function(){
 
-
-const postsForm = new Form(forminfo.posts_form);
-
-postsForm.sendBtn.on('click', function(){
-	postsForm.sendForm(function(){
-
-		const catArray = getCheckedCats();
-		const user_id = $('#datablock').data('userid');
-
-		let feat_img = '';
-		
-		if($('#featImg_container img').attr('src') != undefined){
-			feat_img = $('#featImg_container img').attr('src');
+	const taxInfo = [
+		{
+			name: 'Categories',
+			ul: $('#category_list li input')
 		}
+	];
 
-		// content blocks
+	const catArray = this.getCheckedCats(taxInfo);
 
-		const useContentBlocks = $('#cb_toggle').prop('checked');
-		let theBody = '';
+	console.log('catArray: ', catArray);
 
-		if(useContentBlocks){
-
-			const contentBlocks = $('#content_block_list li .contentBlock');
-
-			let cbArray = [];
-
-			contentBlocks.each(function(){
-
-				let blocktype = $(this).data('content_type');
-				let blockvalue = '';
-
-				if(blocktype == 'Image'){
-					blockvalue = $($(this).children()[2]).attr('src');
-				}else{
-					blockvalue = $($(this).children()[2]).val();
-				}
-
-				const cbObj = {
-					blocktype: blocktype,
-					blockvalue: blockvalue
-				};
-				cbArray.push(cbObj);
-			});
-
-			theBody = JSON.stringify(cbArray); // cbArray stringified
-	
-		}else{
-			theBody = postsForm.requiredFeilds[2].elem.summernote('code');
-		}
-
-		$.ajax({
-			url: '/admin/api/add_post',
-			type: 'POST',
-			// dataType: 'json',
-			data:
-			{
-				title: postsForm.requiredFeilds[0].value,
-				slug: postsForm.requiredFeilds[1].value,
-				body: theBody,
-				categories: JSON.stringify(catArray),
-				feat_img: feat_img,
-				user_id: user_id,
-				date: new Date()
-			},
-			success: function(data)
-			{
-				postsForm.enableSubmit();
-				if(data.success == '1'){
-					postsForm.successBox.html('New Post Created').slideDown();
-				}else{
-					if(data.error){
-						// const displayError = makeErrorReadable(data.error);
-						if(data.error.code == 11000){
-							postsForm.errorBox.html('There is already a post with that title or slug').slideDown();	
-						}else{
-							postsForm.errorBox.html('Something went wrong, please try again later...').slideDown();
-						}
-						
-					}else{
-						postsForm.errorBox.html('Something went wrong, please try again later...').slideDown();
-					}
-				}
-			},
-			error: function(xhr, desc, err)
-			{
-				console.log(xhr, desc, err);
-			}
-		});
-
-	});
-
-});
-
-// Updateing a post
-
-postsForm.updateBtn.on('click', function(){
-
-	postsForm.updateForm(function(){
-
-		const postid = $('#datablock').data('postid');
-
-		const catArray = getCheckedCats();
-
-		let feat_img = '';
-		
-		if($('#featImg_container img').attr('src') != undefined){
-			feat_img = $('#featImg_container img').attr('src');
-		}
-
-		const useContentBlocks = $('#cb_toggle').prop('checked');
-		let theBody = '';
-
-		if(useContentBlocks){
-
-			const contentBlocks = $('#content_block_list li .contentBlock');
-
-			let cbArray = [];
-
-			contentBlocks.each(function(){
-				let blocktype = $(this).data('content_type');
-				let blockvalue = '';
-
-				if(blocktype == 'Image'){
-					blockvalue = $($(this).children()[2]).attr('src');
-				}else{
-					blockvalue = $($(this).children()[2]).val();
-				}
-
-				const cbObj = {
-					blocktype: blocktype,
-					blockvalue: blockvalue
-				};
-				cbArray.push(cbObj);
-			});
-
-			theBody = JSON.stringify(cbArray); // cbArray stringified
-	
-		}else{
-			theBody = postsForm.requiredFeilds[2].elem.summernote('code');
-		}
-
-		$.ajax({
-			url: '/admin/api/update_post',
-			type: 'POST',
-			// dataType: 'json',
-			data:
-			{
-				postid: postid,
-				title: postsForm.requiredFeilds[0].value,
-				slug: postsForm.requiredFeilds[1].value,
-				body: theBody,
-				categories: JSON.stringify(catArray),
-				feat_img: feat_img
-			},
-			success: function(data)
-			{
-				postsForm.enableSubmit();
-
-				console.log(data);
-
-				if(data.success == '1'){
-					postsForm.successBox.html('Post Updated').slideDown();
-				}else{
-					postsForm.errorBox.html('Something went wrong, please try again later...').slideDown();
-				}
-			},
-			error: function(xhr, desc, err)
-			{
-				console.log(xhr, desc, err);
-			}
-		});
-
-	});
-
-});
-
-
-$('#delete_btn').on('click', function(){
-
+	const user_id = $('#datablock').data('userid');
+	const user_name = $('#datablock').data('username');
 	const postid = $('#datablock').data('postid');
 
-	const popup = new Popup(
-		// positive
-		function(){
-			delete_thing('post', postid, '/admin/posts', postsForm);
-		}, 
-		// negitive
-		function(){
-			popup.popDown();
-		}
-	);
+	let feat_img = '';
+	
+	if($('#featImg_container img').attr('src') != undefined){
+		feat_img = $('#featImg_container img').attr('src');
+	}
 
-	popup.popUp('Are you sure you want to delete this Post?');
+	// content blocks
 
-});
+	const useContentBlocks = $('#cb_toggle').prop('checked');
+	let theBody = '';
 
-// Posts Page 
+	if(useContentBlocks){
 
-$('.delete').on('click', function(){
+		const contentBlocks = $('#content_block_list li .contentBlock');
 
-	const postid = $(this).data('postid');
+		let cbArray = [];
 
-	const popup = new Popup(
-		// positive
-		function(){
-			delete_thing('post', postid, '/admin/posts', postsForm);
-		}, 
-		// negitive
-		function(){
-			popup.popDown();
-		}
-	);
+		contentBlocks.each(function(){
 
-	popup.popUp('Are you sure you want to delete this Post?');
+			let blocktype = $(this).data('content_type');
+			let blockvalue = '';
 
-});
-
-
-/* Categories Could put code below in own category.js */
-
-$('.expand_addcatbox').on('click', function(){
-
-	$('.addcatbox').slideDown(200);
-
-});
-
-const catsForm = new Form(forminfo.cats_form);
-
-catsForm.sendBtn.on('click', function(){
-	catsForm.sendForm(function(){
-
-		$.ajax({
-			url: '/admin/api/add_cat',
-			type: 'POST',
-			// dataType: 'json',
-			data:
-			{
-				name: catsForm.requiredFeilds[0].value,
-				description: catsForm.requiredFeilds[1].value
-			},
-			success: function(data)
-			{
-				catsForm.enableSubmit();
-				if(data.success == '1'){
-
-					catsForm.successBox.html('Category Created').slideDown();
-
-					console.log(data);
-					
-					let newCat = '<li>';
-					newCat += '<input type="checkbox">';
-					newCat += '<label>' + data.catname + '</label>';
-					newCat += '<ul class="list">';
-					newCat += '<li>';
-					newCat += '<span class="delbtn deletecat" data-catid="' + data.catid + '">Delete</span>';
-					newCat += '</li>';
-					newCat += '<li>';
-					newCat += '<a>Edit</a>';
-					newCat += '</li>';
-					newCat += '</ul>';
-					newCat += '</li>';
-
-					$('.categories').prepend(newCat);
-
-				}else{
-					if(data.error){
-						// const displayError = makeErrorReadable(data.error);
-						if(data.error.code == 11000){
-							catsForm.errorBox.html('There is already a category with that name').slideDown();	
-						}else{
-							catsForm.errorBox.html('Something went wrong, please try again later...').slideDown();
-						}
-						
-					}else{
-						catsForm.errorBox.html('Something went wrong, please try again later...').slideDown();
-					}
-				}
-			},
-			error: function(xhr, desc, err)
-			{
-				console.log(xhr, desc, err);
+			if(blocktype == 'Image'){
+				blockvalue = $($(this).children()[2]).attr('src');
+			}else{
+				blockvalue = $($(this).children()[2]).val();
 			}
+
+			const cbObj = {
+				blocktype: blocktype,
+				blockvalue: blockvalue
+			};
+			cbArray.push(cbObj);
 		});
 
-	});
-});
+		theBody = JSON.stringify(cbArray); // cbArray stringified
 
-$('body').on('click', '.deletecat', function(){
+	}else{
+		theBody = postForm.requiredFeilds[2].elem.summernote('code');
+	}
 
-	const catid = $(this).data('catid');
-	const thisli = $(this).parent().parent().parent();
-
-	const popup = new Popup(
-		// positive
-		function(){
-			delete_thing('category', catid, '', catsForm, function(){
-				thisli.remove();
-				popup.popDown();
-			});
+	const ajaxDataObj = {
+		create: {
+			title: postForm.requiredFeilds[0].value,
+			slug: postForm.requiredFeilds[1].value,
+			body: theBody,
+			categories: JSON.stringify(catArray),
+			feat_img: feat_img,
+			user_id: user_id,
+			user_name: '',
+			date: new Date()
 		},
-		// negitive
-		function(){
-			popup.popDown();
+		update: {
+			title: postForm.requiredFeilds[0].value,
+			slug: postForm.requiredFeilds[1].value,
+			body: theBody,
+			categories: JSON.stringify(catArray),
+			feat_img: feat_img,
+			postid: postid
 		}
-	);
+	}
 
-	popup.popUp('Are you sure you want to delete this Category?');
+	return ajaxDataObj;
 
 });
 
@@ -417,3 +204,36 @@ const types = [
 
 controls.createButtons(types);
 
+// Categories...
+
+const catsInfo = {
+	sendBtn: $('#add_cat'),
+	updateBtn: $('#update_cat'),
+	errorBox: $('#cats_err'),
+	successBox: $('#cats_success'),
+	spinImg: $('#cats_spin'),
+	requiredFeilds: [
+		{
+			feildName: 'Category title',
+			elem: $('#q_catname'),
+			value: '',
+			error: 'Title required',
+			required: true
+		},
+		{
+			feildName: 'Category Description',
+			elem: $('#q_cat_description'),
+			value: '',
+			required: false
+		},
+		{
+			feildName: 'Category Parent',
+			elem: $('#q_cat_parent'),
+			value: '',
+			required: false
+		}
+	]
+}
+
+const categoryForm = new Form(catsInfo);
+const category = new Taxonomy('Categories', categoryForm, $('#category_list'));

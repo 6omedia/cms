@@ -15,8 +15,12 @@ var PostsSchema = new mongoose.Schema(
 		},
 		date: Date,
 		user_id: String,
+		user_name: String,
 		body: String,
-		categories: Array,
+		taxonomies: [{
+			tax_name: String,
+			terms: Array
+		}],
 		feat_img: String
 	}
 );

@@ -2,13 +2,34 @@ include ./partials/_admin_head.pug
 include ./partials/_admin_header.pug
 body
 	.side_section
-		if user.permissions.length > 0
-			if user.permissions[0].manage_posts
-				a(href="/admin/posts")
-					h2 Posts
-			if user.permissions[0].manage_users
-				a(href="/admin/users")
-					h2 Users
+		h1 Content Types
+		ul.list
+			if user.permissions.length > 0
+				if user.permissions[0].manage_posts
+					li
+						a(href="/admin/posts") Posts
+
+		h1 Taxonomies
+		ul.list
+			li
+				a(href="/admin/taxonomies/categories") Categories
+
+		h1 Settings
+		ul.list
+			if user.permissions.length > 0
+				if user.permissions[0].manage_users
+					li
+						a(href="/admin/users") Users
+
+		//- section.side_taxonomies
+		//- 	h2 Taxonomies
+		//- 	a(href="/admin/taxonomy/new" class="btn addnew") Create New Taxonomy
+		//- 	ul.list#side_taxonomy_list
+		//- 		each taxonomy in taxonomies
+		//- 			li
+		//- 				span.delete(data-postid=`${taxonomy._id}`) Delete
+		//- 				a(href=`/admin/taxonomies/${taxonomy.taxonomy_name}`) #{taxonomy.taxonomy_name}
+
 			
 
 	.main_section
@@ -18,6 +39,8 @@ body
 	script(src='/static/js/admin/form.js')
 	script(src='/static/js/admin/forminfo.js')
 	script(src='/static/js/admin/admin.js')
+	script(src='/static/js/admin/post_manager.js')
+	script(src='/static/js/admin/taxonomy.js')
 
 	case admin_script
 		when 'posts'
@@ -26,6 +49,8 @@ body
 			script(src='//code.jquery.com/ui/1.12.1/jquery-ui.js')
 			script(src='/static/lib/content_blocks/content_blocks.js')
 			script(src='/static/js/admin/admin_posts.js')
+		when 'terms'
+			script(src='/static/js/admin/admin_terms.js')
 		when 'users'
 			script(src='/static/js/admin/admin_users.js')
 		when 'visitors'

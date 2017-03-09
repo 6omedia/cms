@@ -69,7 +69,7 @@ block content
 									li
 										input(type="checkbox", value="manage_users", id="perm2")
 										label(for="perm2") Manage Users
-						if edUser.user_role == 'admin'
+						if edUser.user_role == 'admin'|| edUser.user_role == 'super_admin'
 							script.
 								$('#permissionsBox').show();
 

@@ -89,29 +89,7 @@ block content
 					script.
 						$('#upload_box').hide();
 
-				h3 Categories
-				button.expand_addcatbox.btn Add a Category
-
-				.addcatbox
-					input#q_catname(placeholder="Category name...")
-					input#q_cat_description(placeholder="Category description...")
-					button#add_cat.btn Submit
-					#cats_err.error_box
-					#cats_success.success_box
-
-				ul.list.categories
-					each category in categories
-						li
-							if category.checked
-								input(type="checkbox", value=`${category.catid}`, checked)
-							else
-								input(type="checkbox", value=`${category.catid}`)
-							label #{category.catname}
-							ul.list
-								li
-									span.delbtn.deletecat(data-catid=`${category.catid}`) Delete
-								li
-									a Edit
+				include ./partials/_taxonomy-category-edit
 
 		p.btn(href="", id="update_btn") Update Post
 		p.btn(id="delete_btn") Delete

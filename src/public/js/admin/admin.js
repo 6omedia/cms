@@ -1,12 +1,12 @@
 
 // Global Variables
 
-const useAws = true;
+const useAws = false;
 
 
-function slugify(string){
+function slugify(string, space){
 
-	let slug = string.replace(/ /g, '-').toLowerCase();
+	let slug = string.replace(/ /g, space).toLowerCase();
 
 	return slug;
 

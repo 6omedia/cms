@@ -1,0 +1,28 @@
+h3 Categories
+button.expand_addcatbox.btn Add a Category
+
+.addcatbox#addCategoryBox
+	input#q_catname(placeholder="Category name...")
+	input#q_cat_description(placeholder="Category description...")
+	label(for="q_cat_parent") Parent Category
+	select#q_cat_parent
+		option(value="0") None
+		each category in categories
+			option(value=`${category.catname}`) #{category.catname}
+	button#add_cat.btn Submit
+	#cats_err.error_box
+	#cats_success.success_box
+
+ul.list.categories#category_list
+	each category in categories
+		li
+			if category.checked
+				input(type="checkbox", value=`${category.catid}`, checked)
+			else
+				input(type="checkbox", value=`${category.catid}`)
+			label #{category.catname}
+			ul.list
+				li
+					span.delbtn.deletecat(data-catid=`${category.catid}`) Delete
+				li
+					a Edit

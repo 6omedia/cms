@@ -3,7 +3,8 @@ var express = require('express');
 var admin = express.Router();
 var User = require('../models/user');
 var Post = require('../models/post');
-var Category = require('../models/category');
+// var Category = require('../models/category');
+var Taxonomy = require('../models/taxonomy');
 
 var mid = require('../middleware');
 

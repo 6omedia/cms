@@ -3,7 +3,7 @@ var express = require('express');
 var cms_admin = express.Router();
 var User = require('../../models/user');
 var Post = require('../../models/post');
-var Category = require('../../models/category');
+var Taxonomy = require('../../models/taxonomy');
 
 var mid = require('../../middleware');
 
@@ -47,7 +47,7 @@ cms_admin.get('/posts/new', mid.checkUserAdmin, function(req, res, next){
 
     mid.give_permission(req.thisUser, 'manage_posts', res, function(){
 
-        Category.find({}).sort({$natural:-1}).exec(function(error, categories){
+        Taxonomy.find({taxonomy_name: 'Categories'}).sort({$natural:-1}).exec(function(error, categories){
 
             if(error){
                 next(error);
@@ -57,8 +57,7 @@ cms_admin.get('/posts/new', mid.checkUserAdmin, function(req, res, next){
                     title: 'Create New Post',
                     user: req.thisUser,
                     fullname: req.thisUser.fullname,
-                    categories: categories,
-                    // user: user, 
+                    categories: categories[0].taxonomy_terms,
                     admin_script: 'posts'
                 });
 
@@ -82,13 +81,22 @@ cms_admin.get('/posts/:id', mid.checkUserAdmin, function(req, res, next){
                // console.log(error);
             }else{
 
-                Category.find({}).sort({$natural:-1}).exec(function(error, categories){
+                Taxonomy.find({taxonomy_name: 'Categories'}).sort({$natural:-1}).exec(function(error, categories){
 
                     if(error){
                         next(error);
                     }else{
 
-                        const catarray = mid.getCatsForPost(post, categories);
+                        let postCats = '';
+                        // let catarray = [];
+
+                        if(post.taxonomies[0] != undefined){
+                            postCats = post.taxonomies[0].terms;
+                        }
+
+                        catarray = mid.getCatsForPost(postCats, categories[0].taxonomy_terms);
+
+                        console.log(post);
 
                         res.render('admin_post_edit', {
                             title: 'Edit Post',
@@ -171,6 +179,64 @@ cms_admin.get('/users/:id', mid.checkUserAdmin, function(req, res, next){
                     edUser: edUser,
                     userid: userid,
                     admin_script: 'users'
+                });
+
+            }
+
+        });
+
+    });
+
+});
+
+cms_admin.get('/taxonomy/new', mid.checkUserAdmin, function(req, res, next){
+
+    mid.give_permission(req.thisUser, 'manage_posts', res, function(){
+
+        Taxonomy.find({}, function(err, taxonomies){
+
+            if(err){
+                next(err);
+            }else{
+                
+                res.render('admin_tax_new', {
+                    title: 'Admin',
+                    user: req.thisUser,
+                    fullname: req.thisUser.fullname,
+                    taxonomies: taxonomies,
+                    admin_script: 'taxonomies'
+                });
+
+            }
+
+        });
+
+    });
+
+});
+
+cms_admin.get('/taxonomies/:tax_name', mid.checkUserAdmin, function(req, res, next){
+
+    let tax_name = req.params.tax_name;
+
+    mid.give_permission(req.thisUser, 'manage_posts', res, function(){
+
+        const taxName = mid.allTitleCase(tax_name);
+
+        console.log("Tax name: ", taxName);
+
+        Taxonomy.findOne({"taxonomy_name": taxName}).sort({"taxonomy_terms.parent": 1}).exec(function(error, taxonomy){
+
+            if(error){
+               next(error);
+            }else{
+
+                res.render('admin_tax_terms', {
+                    title: 'Taxonomy ' + taxonomy.taxonomy_name,
+                    user: req.thisUser,
+                    fullname: req.thisUser.fullname,
+                    taxonomy: taxonomy,
+                    admin_script: 'terms'
                 });
 
             }
