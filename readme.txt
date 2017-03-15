@@ -15,7 +15,6 @@
 	mongoimport --db zmot --collection users --file c:/dev/node/zmot/users.json
 	Once logged in for the first time 
 	Change the password of admin@admin
-	also in app.js change the database name
 
 2)
 	
@@ -39,14 +38,12 @@
 
 	Set whether or not file uploads use aws in public/js/admin.js
 	const useAws = true;
-	set aws settings in routes/api.js
 
 things to improve...
 
 	Small Things
 		- Slugify needs to encode special character ? and stuff...
 		- Edit taxonomy name
-		- .sort({date: 'descending'}) on posts
 
 	Medium Things
 		- popular posts (a count on each page view)
@@ -79,7 +76,7 @@ things to improve...
 6. In admin_layout.pug add at the bottom where the scripts are called...
 	when 'postType'
 			script(src='/static/js/admin/admin_{postType}.js')
-7. Add to forminfo.js
+
 
 
 

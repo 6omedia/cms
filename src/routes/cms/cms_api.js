@@ -118,35 +118,6 @@ cms_api.post('/update_post', mid.checkUserAdmin, function(req, res, next){
 
 // });
 
-cms_api.post('/add_cat', mid.checkUserAdmin, function(req, res, next){
-
-    let data = {};
-    data.success = '0';
-    
-    const category = new Category(
-        {
-          name: req.body.name,
-          description: req.body.description
-        }
-    );
-
-    //save model to MongoDB
-    category.save(function (err, cat) {
-
-        if(err) {
-            data.error = err;
-            res.send(data);
-        }else{
-            data.success = '1';
-            data.catname = cat.name; 
-            data.catid = cat._id;
-            res.send(data);
-        }
-
-    });
-
-});
-
 cms_api.post('/add_term', mid.checkUserAdmin, function(req, res, next){
 
     let data = {};

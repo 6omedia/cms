@@ -3,14 +3,14 @@ block content
 
 	.container 
 		section
-			h1 #{post[0].title}
+			h1 #{post.title}
 			.content
-				if post[0].body.substring(0, 3) == '[{"'
-					each block in JSON.parse(post[0].body)
+				if post.body.substring(0, 3) == '[{"'
+					each block in JSON.parse(post.body)
 						case block.blocktype
 							when 'HTML'
 								p !{block.blockvalue}
 							default
 								p #{block.blockvalue}
 				else
-					.div !{post[0].body}
+					.div !{post.body}

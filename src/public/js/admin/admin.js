@@ -6,7 +6,9 @@ const useAws = false;
 
 function slugify(string, space){
 
-	let slug = string.replace(/ /g, space).toLowerCase();
+	let slug = string
+		.replace(/[^\w ]+/g,'')
+		.replace(/ +/g, space);
 
 	return slug;
 

@@ -21,7 +21,12 @@ var PostsSchema = new mongoose.Schema(
 			tax_name: String,
 			terms: Array
 		}],
-		feat_img: String
+		feat_img: String,
+		view_count: {
+			type: Number,
+			required: true,
+			default: 0
+		}
 	}
 );
 

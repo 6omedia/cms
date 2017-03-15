@@ -12,7 +12,9 @@ main.get('/', function(req, res){
     const path = req.path;
     res.locals.path = path;
 
-    Post.find({}).sort({date: -1}).exec(function(err, posts){
+    // Post.find({}).sort({date: -1}).exec(function(err, posts){
+
+    Post.find({}).sort({view_count: -1}).exec(function(err, posts){
 
         if(err){
             next(err);

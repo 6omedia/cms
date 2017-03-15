@@ -5,6 +5,7 @@ var User = require('../../models/user');
 var Post = require('../../models/post');
 var Taxonomy = require('../../models/taxonomy');
 var mid = require('../../middleware');
+var frontend = require('../../middleware/frontend');
 
 // define the home page route
 // Home
@@ -118,10 +119,24 @@ cms_main.get('/posts/:slug', function(req, res, next){
   
     const slug = req.params.slug;
 
-    Post.find({slug: slug}).exec(function(err, post){
-        res.render('single_post', {
-            post: post
-        });
+    Post.findOne({slug: slug}).exec(function(err, post){
+
+        if(err){
+          next();
+        }else{
+
+          console.log('Post id: ', post);
+
+          const plusViewCount = frontend.increaseViewCount('post', post._id);
+
+          console.log('plusViewCount: ', plusViewCount);
+
+          res.render('single_post', {
+              post: post
+          });
+  
+        }
+
     });
 
 });
