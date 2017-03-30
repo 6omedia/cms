@@ -24,6 +24,13 @@ const formInfo = {
 			required: true
 		},
 		{
+			feildName: 'meta description',
+			elem: $('#q_metadescription'),
+			value: '',
+			error: 'meta description required',
+			required: true
+		},
+		{
 			feildName: 'content',
 			elem: $('#q_content'),
 			value: '',
@@ -40,6 +47,25 @@ const formInfo = {
 
 const postForm = new Form(formInfo);
 
+const controls = new CbControls($('#content_block_list'), $('.post_section_menu'), useAws);
+
+const types = [
+	'H2',
+	'H3',
+	'Paragraph',
+	'Quote',
+	'Horizontal Rule',
+	'Preface',
+	'Image',
+	'HTML',
+	'Gallery',
+	'Video'
+];
+
+controls.createButtons(types);
+
+
+
 const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, '', function(){
 
 	const taxInfo = [
@@ -51,7 +77,7 @@ const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, 
 
 	const catArray = this.getCheckedCats(taxInfo);
 
-	console.log('catArray: ', catArray);
+	// console.log('catArray: ', catArray);
 
 	const user_id = $('#datablock').data('userid');
 	const user_name = $('#datablock').data('username');
@@ -79,39 +105,54 @@ const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, 
 			let blocktype = $(this).data('content_type');
 			let blockvalue = '';
 
-			if(blocktype == 'Image'){
+			if(blocktype == 'Preface'){
+
+				blockvalue = {};
+
+				blockvalue.title = $($(this).children()[2]).val();
+				blockvalue.summary = $($(this).children()[3]).val();
+				blockvalue.img = $($(this).children()[4]).attr('src');
+
+			}else if(blocktype == 'Image'){
 				blockvalue = $($(this).children()[2]).attr('src');
+			}else if(blocktype == 'Horizontal Rule'){
+				blockvalue = 'hr';
 			}else{
 				blockvalue = $($(this).children()[2]).val();
 			}
+
+			console.log('blockvalue: ', blockvalue);
 
 			const cbObj = {
 				blocktype: blocktype,
 				blockvalue: blockvalue
 			};
 			cbArray.push(cbObj);
+
 		});
 
 		theBody = JSON.stringify(cbArray); // cbArray stringified
 
 	}else{
-		theBody = postForm.requiredFeilds[2].elem.summernote('code');
+		theBody = postForm.requiredFeilds[3].elem.summernote('code');
 	}
 
 	const ajaxDataObj = {
 		create: {
 			title: postForm.requiredFeilds[0].value,
 			slug: postForm.requiredFeilds[1].value,
+			meta_description: postForm.requiredFeilds[2].value,
 			body: theBody,
 			categories: JSON.stringify(catArray),
 			feat_img: feat_img,
 			user_id: user_id,
-			user_name: '',
+			user_name: user_name,
 			date: new Date()
 		},
 		update: {
 			title: postForm.requiredFeilds[0].value,
 			slug: postForm.requiredFeilds[1].value,
+			meta_description: postForm.requiredFeilds[3].value,
 			body: theBody,
 			categories: JSON.stringify(catArray),
 			feat_img: feat_img,
@@ -193,16 +234,7 @@ $('.htmlEdit').keydown(function (e){
     }
 });
 
-const controls = new CbControls($('#content_block_list'), $('.post_section_menu'), useAws);
 
-const types = [
-	'Plain Text',
-	'HTML',
-	'Image',
-	'Video'
-];
-
-controls.createButtons(types);
 
 // Categories...
 

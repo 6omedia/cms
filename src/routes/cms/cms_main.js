@@ -14,7 +14,7 @@ var frontend = require('../../middleware/frontend');
 
 // login for user or admin assign user a permission
 cms_main.get('/login', mid.loggedOut, function(req, res){
-  res.render('login');
+  res.render('login', {meta_description: 'login'});
 });
 
 cms_main.post('/login', function(req, res, next){
@@ -57,7 +57,10 @@ cms_main.post('/login', function(req, res, next){
 // register/signup (only for non-admins)
 
 cms_main.get('/signup', mid.loggedOut, function(req, res){
-  res.render('signup', {title: 'Sign Up'});
+  res.render('signup', {
+    title: 'Sign Up',
+    meta_description: 'Sign Up'
+  });
 });
 
 cms_main.post('/signup', function(req, res, next){
@@ -125,17 +128,54 @@ cms_main.get('/posts/:slug', function(req, res, next){
           next();
         }else{
 
-          console.log('Post id: ', post);
+          // console.log('Post id: ', post);
 
           const plusViewCount = frontend.increaseViewCount('post', post._id);
 
-          console.log('plusViewCount: ', plusViewCount);
+          // console.log('plusViewCount: ', plusViewCount);
 
           res.render('single_post', {
-              post: post
+              post: post,
+              meta_description: post.meta_description
           });
   
         }
+
+    });
+
+});
+
+cms_main.get('/search/:query', function(req, res){
+
+    const query = req.params.query;
+
+    Post.find({
+        "$text": {
+            "$search": query // req.body.searchTerm
+        }
+    }).exec(function(err, posts){
+
+        if(err){
+            res.send('Error :' + err);
+        }else{
+
+            Video.find({
+                "$text": {
+                    "$search": query // req.body.searchTerm
+                }
+            }).exec(function(err, videos){
+
+                res.render('search', {
+                    title: 'Search for ' + query,
+                    meta_description: 'Search for ' + query,
+                    posts: posts,
+                    videos: videos,
+                    query: query
+                });
+
+            });
+
+        }        
 
     });
 

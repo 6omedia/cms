@@ -13,7 +13,10 @@ block content
 						input(type="text", id="q_title")
 					li
 						h3 Slug
-						input(type="text", id="q_slug")
+						input(type="text", id="q_slug" disabled)
+					li
+						h3 Meta Description
+						input(type="text", id="q_metadescription")
 					li
 						h3 Post Body
 						.toggleBox
@@ -30,10 +33,7 @@ block content
 							p Add a section to the post
 							ul.list#content_block_list
 							ul.list.post_section_menu
-								//- li Plain text
-								//- li html
-								//- li Image
-								//- li Video
+								
 			.col-sm-4
 				h3 Featured Image
 				#featImg_container

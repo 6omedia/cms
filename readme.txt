@@ -41,15 +41,21 @@
 
 things to improve...
 
-	Small Things
-		- Slugify needs to encode special character ? and stuff...
-		- Edit taxonomy name
-
-	Medium Things
-		- popular posts (a count on each page view)
-		- pagination (Do this on cms first)
+	Medium Things (v4)
+		DONE - Meta description
+		DONE - Schema markup
+		DONE - favicon
+		- content blocks
+		- pagination (both front and backend)
+		- taxonomies on posts make collapsable
+		- posts filter on back end
+		- search functionality
 
 	Big Things
+		- Media Uploader (Manage images from the server, or select images for use on posts allready on the server)
+		- full site backup (download)
+		
+	Maybe Things
 		- Add post types (branch off from cms.. maybe new project called Blog CMS)
 
 
@@ -157,3 +163,26 @@ db.createUser(
     ]
   }
 )
+
+
+//// Article Schema Markup ////
+
+
+<span itemscope itemtype="http://schema.org/Article"><h1 itemprop="name">article name</h1>
+
+<p>Posted on 
+<span itemprop="datePublished" content="2016-09-09">9th September 2016</span></p>
+<p>
+	by 
+	<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+		<span itemprop="name">
+			someone yeah
+		</span>
+	</span>
+</p>
+<div>
+<img itemprop="image" src="http://njdckscnkl.com"/>
+<p itemprop="articleBody">ncdjksc xjksd xcjksd c xz</p>
+</div>
+
+</span>

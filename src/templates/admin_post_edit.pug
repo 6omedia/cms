@@ -12,7 +12,10 @@ block content
 						input(type="text", id="q_title", value=`${post.title}`)
 					li
 						h3 Slug
-						input(type="text", id="q_slug", value=`${post.slug}`)
+						input(type="text", id="q_slug", value=`${post.slug}` disabled)
+					li
+						h3 Meta Description
+						input(type="text", id="q_metadescription", value=`${post.meta_description}`)
 					li
 						h3 Post Body
 						.toggleBox
@@ -32,8 +35,24 @@ block content
 												h4 #{block.blocktype}
 												.remove x
 												case block.blocktype
-													when 'Plain Text'
+													when 'H2'
+														input(type="text", value=`${block.blockvalue}`)
+													when 'H3'
+														input(type="text", value=`${block.blockvalue}`)
+													when 'Paragraph'
 														textarea #{block.blockvalue}
+													when 'Quote'
+														textarea #{block.blockvalue}
+													when 'Horizontal Rule'
+														hr
+													when 'Preface'
+														input(type="text", value=`${block.blockvalue.title}`)
+														textarea(placeholder="Summary...") #{block.blockvalue.summary}
+														img(src=`${block.blockvalue.img}`)
+														input(type="file")
+														.progress
+															.progress-bar(role="progressbar")
+
 													when 'Video'
 														input(type="text")
 													when 'Image'

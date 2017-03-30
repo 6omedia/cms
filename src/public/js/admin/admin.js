@@ -3,12 +3,12 @@
 
 const useAws = false;
 
-
 function slugify(string, space){
 
 	let slug = string
 		.replace(/[^\w ]+/g,'')
-		.replace(/ +/g, space);
+		.replace(/ +/g, space)
+		.toLowerCase();
 
 	return slug;
 
@@ -58,3 +58,31 @@ function delete_thing(delete_item, itemid, relocateUrl, formObj, norefreshFunc){
 	});
 
 } 
+
+function attachImgUploader(img, prog, fileInput){
+
+	const uploader = new ImageUploader(fileInput, '', prog, 'posts', this.aws);
+
+	uploader.fileInput.on('click', function(){
+		uploader.resetProgress();	
+	});
+
+	uploader.fileInput.on('change', function(){
+
+		if(uploader.awsObj == false){
+
+			uploader.uploadLocalFiles(function(data){
+				img.attr('src', '/static/uploads/posts/' + data.filename).show();
+			});
+
+		}else{
+
+			uploader.uploadFile(function(awsUrl, filename){
+				img.attr('src', awsUrl).show();
+			});
+
+		}
+
+	});
+
+}

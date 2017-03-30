@@ -18,16 +18,47 @@
 		    div.append(remove);
 
 		    switch(this.type) {
-			    case 'Plain Text':
+		    	case 'H2':
+		    	case 'H3':
+		    		const headingInput = $(document.createElement('input')).attr('type', 'text')
+		    													.addClass('block_' + this.type);
+		    		div.append(headingInput);
+		    		break;
+			    case 'Paragraph':
+			    case 'Quote':
 			        const txtArea = $(document.createElement('textarea')).attr('placeholder', "type text here...");
 			        div.append(txtArea);
 			        break;
+			    case 'Horizontal Rule':
+			    	div.append($(document.createElement('hr')));
+			    	break;
 			    case 'HTML':
 			    	const htmlArea = $(document.createElement('textarea'))
 			    						.attr('placeholder', "type html here...")
 			    						.addClass('htmlEdit');
 			        div.append(htmlArea);
 			        break;
+			    case 'Preface':
+			    	const prefaceTitle = $(document.createElement('input'))
+			    							.attr('placeholder', "Title...");
+			    	const prefaceSummary = $(document.createElement('textarea'))
+			    							.attr('placeholder', "Summary...");
+			    	const prefaceImg = $(document.createElement('img')).hide();
+			    	const prefaceFileInput = $(document.createElement('input')).attr('type', 'file');
+			    	const prefaceProg = $(document.createElement('div')).addClass('progress');
+			    	const prefaceProgBar = $(document.createElement('div')).addClass('progress-bar')
+			    						.attr('role', 'progressbar');
+
+			    	div.append(prefaceTitle);
+			    	div.append(prefaceSummary);
+			    	prefaceProg.append(prefaceProgBar);
+			    	div.append(prefaceImg);
+			    	div.append(prefaceFileInput);
+			    	div.append(prefaceProg);
+
+			    	this.attachImgUploader(prefaceImg, prefaceProgBar, prefaceFileInput);
+			    	
+			    	break;
 			    case 'Image':
 			    	const img = $(document.createElement('img')).hide();
 			    	const fileInput = $(document.createElement('input')).attr('type', 'file');
@@ -117,7 +148,8 @@
 		createButtons(cbTypes){
 
 			for(let i=0; i<cbTypes.length; i++){
-				const button = '<li data-cb_type="' + cbTypes[i] + '">' + cbTypes[i] + '</li>';
+				let button = '<li data-cb_type="' + cbTypes[i] + '">';
+				button += '<div id="cb_' + slugify(cbTypes[i], '') + '"></div><p>' + cbTypes[i] + '</p></li>';
 				this.ul.append(button);
 			}
 

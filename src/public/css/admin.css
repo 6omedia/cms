@@ -66,6 +66,26 @@ label {
     width: auto;
 }
 
+.dynamicList {
+    margin-top: 20px;
+}
+
+.dynamicList span {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    border-radius: 100%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.dynamicList p {
+    display: inline-block;
+}
+
 header {
 	background: #2d2d2d;
 	padding: 10px 0px;
@@ -294,7 +314,9 @@ header .list li a {
 	padding: 5px;
 }
 
-.post_section_menu li {
+/* Content Block Styles */
+
+/*.post_section_menu li {
 	display: inline-block;
     background: #b9ceff;
     border-radius: 100%;
@@ -305,7 +327,65 @@ header .list li a {
     border: solid 2px #8eabef;
     margin-right: 15px;
     cursor: pointer;
+}*/
+
+.post_section_menu li {
+    display: inline-block;
+    text-align: center;
 }
+
+.post_section_menu li div {
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    border-radius: 100%;
+    border: none;
+    box-shadow: 0px 0px 7px rgba(0,0,0,0.4);
+    margin: 10px;
+    cursor: pointer;
+}
+
+#cb_H2 {
+    background: #038a8e url('../lib/content_blocks/img/tag1.png') no-repeat 50% 50%;
+}
+#cb_H3 {
+    background: #038a8e url('../lib/content_blocks/img/tag1.png') no-repeat 50% 50%;
+}
+#cb_Paragraph {
+    background: #038a8e url('../lib/content_blocks/img/cb-para.png') no-repeat 50% 50%;
+}
+#cb_Quote {
+    background: #038a8e url('../lib/content_blocks/img/cb-quote.png') no-repeat 50% 50%;
+}
+#paragraph_cb {
+    background: #038a8e url('../lib/content_blocks/img/cb-para.png') no-repeat 50% 50%;
+}
+#cb_HorizontalRule {
+    background: #038a8e url('../lib/content_blocks/img/cb-hr.png') no-repeat 50% 50%;
+}
+
+#cb_Preface {
+    background: #00549e url('../lib/content_blocks/img/cb-preface.png') no-repeat 50% 50%;
+}
+#cb_Image {
+    background: #00549e url('../lib/content_blocks/img/cb-image.png') no-repeat 50% 50%;
+}
+#cb_HTML {
+    background: #00549e url('../lib/content_blocks/img/cb-code.png') no-repeat 50% 50%;
+}
+#cb_Gallery {
+    background: #00549e url('../lib/content_blocks/img/cb-gallery.png') no-repeat 50% 50%;   
+}
+#cb_Video {
+    background: #00549e url('../lib/content_blocks/img/cb-video.png') no-repeat 50% 50%;
+}
+/*#advert_cb {
+    background: #00549e url('img/cb-ad.png') no-repeat 50% 50%;
+}
+#download_cb {
+    background: #00549e url('img/cb-download.png') no-repeat 50% 50%;    
+}*/
+
 
 .addcatbox {
     border: solid 2px#7081ab;
@@ -455,6 +535,11 @@ header .list li a {
 .contentBlock img {
     width: auto;
     max-width: 100%;
+}
+
+.contentBlock hr {
+    clear: both;
+    border-top: 1px solid #969696;
 }
 
 .htmlEdit {

@@ -33,6 +33,7 @@ cms_api.post('/add_post', mid.checkUserAdmin, function(req, res, next){
         {
             title: req.body.title,
             slug: req.body.slug,
+            meta_description: req.body.meta_description,
             body: req.body.body,
             taxonomies: JSON.parse(req.body.categories),
             feat_img: req.body.feat_img,
@@ -71,6 +72,7 @@ cms_api.post('/update_post', mid.checkUserAdmin, function(req, res, next){
             $set: {
                 title: req.body.title,
                 slug: req.body.slug,
+                meta_description: req.body.meta_description,
                 body: req.body.body,
                 taxonomies: JSON.parse(req.body.categories),
                 feat_img: req.body.feat_img

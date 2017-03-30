@@ -143,7 +143,7 @@ class PostManager {
 			const postType_slug = slugify(thisPm.postTypeName, '_');
 
 			// console.log('postid ', this);
-			// console.log('postid ', postid);
+			
 
 			const popup = new Popup(
 				// positive
@@ -166,6 +166,8 @@ class PostManager {
 
 			const postid = $(this).data('postid');
 			const postType_slug = slugify(thisPm.postTypeName, '_');
+
+			console.log('postid ', postType_slug);
 
 			const popup = new Popup(
 				// positive

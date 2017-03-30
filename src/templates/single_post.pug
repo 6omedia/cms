@@ -2,15 +2,46 @@ extends ./layout.pug
 block content
 
 	.container 
-		section
-			h1 #{post.title}
-			.content
-				if post.body.substring(0, 3) == '[{"'
-					each block in JSON.parse(post.body)
-						case block.blocktype
-							when 'HTML'
-								p !{block.blockvalue}
-							default
-								p #{block.blockvalue}
-				else
-					.div !{post.body}
+		span(itemscope itemtype="http://schema.org/Article")
+			section
+				h1 #{post.title}
+				p(itemprop="datePublished") posted on #{post.date}
+				span(itemprop="author" itemscope itemtype="http://schema.org/Person")
+					span(itemprop="name")
+						p by #{post.user_name}
+
+				img(itemprop="image" src=`${post.feat_img}`)
+				.content
+					if post.body.substring(0, 3) == '[{"'
+						each block in JSON.parse(post.body)
+							case block.blocktype
+								when 'H2'
+									.contentBlock 
+										h2 #{block.blockvalue}
+								when 'H3'
+									.contentBlock 
+										h3 #{block.blockvalue}
+								when 'Paragraph'
+									.contentBlock 
+										p #{block.blockvalue}
+								when 'Quote'
+									.contentBlock 
+										blockquote #{block.blockvalue}
+								when 'Horizontal Rule'
+									.contentBlock 
+										hr
+								when 'Preface'
+									.contentBlock
+										h2 #{block.blockvalue.title}
+										p.summary #{block.blockvalue.summary}
+										img(src=`${block.blockvalue.img}`)
+								when 'HTML'
+									.contentBlock !{block.blockvalue}
+								when 'Image'
+									.contentBlock 
+										img(src=`${block.blockvalue}` alt="")
+								default
+									.contentBlock 
+										p #{block.blockvalue}
+					else
+						.div !{post.body}

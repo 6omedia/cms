@@ -22,7 +22,8 @@ main.get('/', function(req, res){
             res.render('index', 
                 {
                     title: 'Website',
-                    posts: posts
+                    posts: posts,
+                    meta_description: 'Meta description for website'
                 }
             );
         }
@@ -41,7 +42,8 @@ main.get('/profile', mid.requiresLogin, function(req, res, next){
       }else{
         res.render('profile', {
           title: 'Profile',
-          fullname: user.fullname
+          fullname: user.fullname,
+          meta_description: ''
         });
       }
     });

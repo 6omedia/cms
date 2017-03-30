@@ -13,6 +13,7 @@ var PostsSchema = new mongoose.Schema(
 			required: true,
 			trim: true
 		},
+		meta_description: String,
 		date: Date,
 		user_id: String,
 		user_name: String,
