@@ -1,0 +1,17 @@
+extends admin_layout
+
+block content
+	h1 #{h1}
+	if type == 'images'
+		ul.list(class=`mediaFilesList media-${type}`)
+			each file in files
+				li
+					span(data-filename=`${file}`, data-type=`${type}`).remove x
+					img(src=`/static/uploads/posts/${file}`)
+	else if type == 'videos'
+		ul.list(class=`mediaFilesList media-${type}`)
+			each file in files
+				li
+					span(data-filename=`${file}`, data-type=`${type}`).remove x
+					video(src=`/static/uploads/videos/${file}`)
+					p #{file.substr(36)}

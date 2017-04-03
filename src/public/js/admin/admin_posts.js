@@ -64,8 +64,6 @@ const types = [
 
 controls.createButtons(types);
 
-
-
 const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, '', function(){
 
 	const taxInfo = [
@@ -105,23 +103,32 @@ const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, 
 			let blocktype = $(this).data('content_type');
 			let blockvalue = '';
 
-			if(blocktype == 'Preface'){
+			switch(blocktype){
 
-				blockvalue = {};
+				case 'Preface':
+					blockvalue = {};
 
-				blockvalue.title = $($(this).children()[2]).val();
-				blockvalue.summary = $($(this).children()[3]).val();
-				blockvalue.img = $($(this).children()[4]).attr('src');
+					blockvalue.title = $($(this).children()[2]).val();
+					blockvalue.summary = $($(this).children()[3]).val();
+					blockvalue.img = $($(this).children()[4]).attr('src');
 
-			}else if(blocktype == 'Image'){
-				blockvalue = $($(this).children()[2]).attr('src');
-			}else if(blocktype == 'Horizontal Rule'){
-				blockvalue = 'hr';
-			}else{
-				blockvalue = $($(this).children()[2]).val();
+					break;
+
+				case 'Image':
+				case 'Video':
+					blockvalue = $($(this).children()[2]).attr('src');
+
+					break;
+
+				case 'Horizontal Rule':
+					blockvalue = 'hr';
+
+					break;
+
+				default:
+					blockvalue = $($(this).children()[2]).val();
+
 			}
-
-			console.log('blockvalue: ', blockvalue);
 
 			const cbObj = {
 				blocktype: blocktype,
@@ -152,7 +159,7 @@ const postProductManager = new PostManager(addUrl, updateUrl, 'Post', postForm, 
 		update: {
 			title: postForm.requiredFeilds[0].value,
 			slug: postForm.requiredFeilds[1].value,
-			meta_description: postForm.requiredFeilds[3].value,
+			meta_description: postForm.requiredFeilds[2].value,
 			body: theBody,
 			categories: JSON.stringify(catArray),
 			feat_img: feat_img,
@@ -194,6 +201,20 @@ imgUploader.uploadBtn.on('click', function(){
 		});
 
 	}
+
+});
+
+// #selectImgBtn
+
+const imgManager = new MediaManager('image', 'posts');
+
+$('#selectImgBtn').on('click', function(){
+
+	imgManager.openMedia(function(imgUrl){
+
+		console.log(imgUrl);
+
+	});
 
 });
 

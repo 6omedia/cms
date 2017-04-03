@@ -74,8 +74,18 @@
 
 			        break;
 			    case 'Video':
-			    	const vid_input = $(document.createElement('input')).attr('type', 'text');
-			   		div.append(vid_input);
+			    	const video = $(document.createElement('video')).hide().attr('controls', 'true');
+			    	const videofileInput = $(document.createElement('input')).attr('type', 'file');
+			    	const videoProg = $(document.createElement('div')).addClass('progress');
+			    	const videoProgBar = $(document.createElement('div')).addClass('progress-bar')
+			    						.attr('role', 'progressbar');
+			    	videoProg.append(videoProgBar);
+			    	div.append(video);
+			    	div.append(videofileInput);
+			    	div.append(videoProg);
+
+			    	this.attachVideoUploader(video, videoProgBar, videofileInput);
+
 			        break;
 			    default:
 			        console.log('Not a content type');
@@ -127,6 +137,34 @@
 
 		}
 
+		attachVideoUploader(video, prog, fileInput){
+
+			const uploader = new ImageUploader(fileInput, '', prog, 'videos', this.aws);
+
+			uploader.fileInput.on('click', function(){
+				uploader.resetProgress();	
+			});
+
+			uploader.fileInput.on('change', function(){
+
+				if(uploader.awsObj == false){
+
+					uploader.uploadLocalFiles(function(data){
+						video.attr('src', '/static/uploads/videos/' + data.filename).show();
+					});
+
+				}else{
+
+					uploader.uploadFile(function(awsUrl, filename){
+						video.attr('src', awsUrl).show();
+					});
+
+				}
+
+			});
+
+		}
+
 		constructor(ul, type, aws){
 			this.ul = ul;
 			this.type = type;
@@ -163,8 +201,8 @@
 
 		}
 
-		attachImgUploaders(){
-			const aws = this.aws;
+		attachUploaders(aws){
+
 			const contentBlocks = this.cbList.children();
 			contentBlocks.each(function(){
 				let div = $(this).children();
@@ -175,7 +213,7 @@
 					const uploader = new ImageUploader(div.children('input'), '', div.children('.progress'), 'posts', aws);
 
 					uploader.fileInput.on('click', function(){
-						uploader.resetProgress();	
+						uploader.resetProgress();
 					});
 
 					uploader.fileInput.on('change', function(){
@@ -195,6 +233,37 @@
 						}
 
 					});
+				}else if(div.data('content_type') == 'Video'){
+
+					const video = div.children('video');
+					const uploader = new ImageUploader(div.children('input'), '', div.children('.progress'), 'videos', aws);
+
+					uploader.fileInput.on('click', function(){
+						uploader.resetProgress();	
+					});
+
+					uploader.fileInput.on('change', function(){
+
+						if(uploader.awsObj == false){
+
+							console.log('uploader.awsObj == false');
+
+							uploader.uploadLocalFiles(function(data){
+								video.attr('src', '/static/uploads/videos/' + data.filename).show();
+							});
+
+						}else{
+
+							console.log('uploader.awsObj == true');
+
+							uploader.uploadFile(function(awsUrl, filename){
+								video.attr('src', awsUrl).show();
+							});
+
+						}
+
+					});
+
 				}
 			});
 		}
@@ -204,7 +273,7 @@
 			this.cbList = cbList;
 			this.ul = ul;
 			this.cbList.sortable();
-			this.attachImgUploaders();
+			this.attachUploaders(aws);
 			this.aws = aws;
 		}
 	}

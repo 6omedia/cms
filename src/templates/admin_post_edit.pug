@@ -54,7 +54,16 @@ block content
 															.progress-bar(role="progressbar")
 
 													when 'Video'
-														input(type="text")
+														if block.blockvalue != ''
+															video(src=`${block.blockvalue}`, controls)
+															input(type="file")
+															.progress
+																.progress-bar
+														else
+															video(src="" style="display: none")
+															input(type="file")
+															.progress
+																.progress-bar
 													when 'Image'
 														if block.blockvalue != ''
 															img(src=`${block.blockvalue}`)

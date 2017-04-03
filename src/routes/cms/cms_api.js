@@ -481,4 +481,25 @@ cms_api.post('/upload/:subfolder', mid.checkUserAdmin, function(req, res, next){
             
 });
 
+cms_api.post('/media/remove', mid.checkUserAdmin, function(req, res, next){
+
+    // ./src/public/uploads/videos
+
+    let data = {};
+    data.success = '0';
+
+    fs.unlink('./src/public/uploads/' + req.body.folder + '/' + req.body.fileName, function(err){
+
+        if(err){
+            data.error = err;
+        }else{
+            data.success = '1';
+        }
+
+        res.send(data);
+
+    });
+
+});
+
 module.exports = cms_api;

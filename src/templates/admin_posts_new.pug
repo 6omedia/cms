@@ -42,11 +42,13 @@ block content
 						p Remove Featured Img
 				.panel.panel-default#upload_box
 					.panel-body
-						span(class="glyphicon glyphicon-cloud-upload")
-						.progress
-							#feat_img_prog.progress-bar(role="progressbar")
+						button.btn#selectImgBtn Select Image from Media
+						p or
 						input(id="upload-input" type="file" name="uploads[]" multiple="multiple")
 						button.btn#upload_btn(type="button") Upload File
+						.progress
+							#feat_img_prog.progress-bar(role="progressbar")
+						span(class="glyphicon glyphicon-cloud-upload")
 
 				include ./partials/_taxonomy-category-new
 

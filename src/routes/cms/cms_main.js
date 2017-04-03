@@ -6,6 +6,7 @@ var Post = require('../../models/post');
 var Taxonomy = require('../../models/taxonomy');
 var mid = require('../../middleware');
 var frontend = require('../../middleware/frontend');
+// var mongoosePages = require('mongoose-pages');
 
 // define the home page route
 // Home

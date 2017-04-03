@@ -32,7 +32,8 @@ block content
 										hr
 								when 'Preface'
 									.contentBlock
-										h2 #{block.blockvalue.title}
+										if block.blockvalue.title != ''
+											h2 #{block.blockvalue.title}
 										p.summary #{block.blockvalue.summary}
 										img(src=`${block.blockvalue.img}`)
 								when 'HTML'
@@ -40,6 +41,9 @@ block content
 								when 'Image'
 									.contentBlock 
 										img(src=`${block.blockvalue}` alt="")
+								when 'Video'
+									.contentBlock 
+										video(src=`${block.blockvalue}`, controls)
 								default
 									.contentBlock 
 										p #{block.blockvalue}

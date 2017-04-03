@@ -15,7 +15,11 @@ p, li, input, button, a {
 }
 
 img {
-	width: 100%;
+	width: auto;
+}
+
+video {
+	width: 500px;
 }
 
 /* dry classes */

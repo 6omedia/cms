@@ -38,6 +38,10 @@ label {
     vertical-align: top;
 }
 
+video {
+    width: 400px;
+}
+
 /* dry classes */
 
 .delbtn {
@@ -345,38 +349,38 @@ header .list li a {
     cursor: pointer;
 }
 
-#cb_H2 {
+#cb_h2 {
     background: #038a8e url('../lib/content_blocks/img/tag1.png') no-repeat 50% 50%;
 }
-#cb_H3 {
+#cb_h3 {
     background: #038a8e url('../lib/content_blocks/img/tag1.png') no-repeat 50% 50%;
 }
-#cb_Paragraph {
+#cb_paragraph {
     background: #038a8e url('../lib/content_blocks/img/cb-para.png') no-repeat 50% 50%;
 }
-#cb_Quote {
+#cb_quote {
     background: #038a8e url('../lib/content_blocks/img/cb-quote.png') no-repeat 50% 50%;
 }
 #paragraph_cb {
     background: #038a8e url('../lib/content_blocks/img/cb-para.png') no-repeat 50% 50%;
 }
-#cb_HorizontalRule {
+#cb_horizontalrule {
     background: #038a8e url('../lib/content_blocks/img/cb-hr.png') no-repeat 50% 50%;
 }
 
-#cb_Preface {
+#cb_preface {
     background: #00549e url('../lib/content_blocks/img/cb-preface.png') no-repeat 50% 50%;
 }
-#cb_Image {
+#cb_image {
     background: #00549e url('../lib/content_blocks/img/cb-image.png') no-repeat 50% 50%;
 }
-#cb_HTML {
+#cb_html {
     background: #00549e url('../lib/content_blocks/img/cb-code.png') no-repeat 50% 50%;
 }
-#cb_Gallery {
+#cb_gallery {
     background: #00549e url('../lib/content_blocks/img/cb-gallery.png') no-repeat 50% 50%;   
 }
-#cb_Video {
+#cb_video {
     background: #00549e url('../lib/content_blocks/img/cb-video.png') no-repeat 50% 50%;
 }
 /*#advert_cb {
@@ -484,6 +488,19 @@ header .list li a {
 	display: block;
 }
 
+.progress {
+    margin-bottom: 0px;
+    margin-top: 10px;
+    width: calc(100% - 30px);
+    float: left;
+}
+
+#upload_box .glyphicon {
+    float: right;
+    display: inline-block;
+    margin-top: 10px;
+}
+
 /* Content Blocks */
 
 #cb {
@@ -504,7 +521,8 @@ header .list li a {
     float: left;
 }
 
-.contentBlock .remove {
+.contentBlock .remove,
+.mediaFilesList .remove {
     display: inline-block;
     width: 25px;
     height: 25px;
@@ -629,4 +647,43 @@ header .list li a {
     margin-right: 10px;
     display: inline-block;
     padding: 0px 0px;
+}
+
+.mediaFilesList li {
+    width: 300px;
+    height: 300px;
+    float: left;
+    background: #ccc;
+    margin: 20px;
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    float: left;
+    background: #f1f1f1;
+    margin: 20px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+    padding: 20px;
+    position: relative;
+}
+
+.mediaFilesList li img {
+    width: 260px;
+    height: 260px;
+    object-fit: contain;
+    object-position: 50% 50%;
+}
+
+.mediaFilesList .remove {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #333;
+}
+
+.media-videos li {
+    height: auto;
+}
+
+.media-videos video {
+    width: 100%;
 }

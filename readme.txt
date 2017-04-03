@@ -46,7 +46,7 @@ things to improve...
 		DONE - Schema markup
 		DONE - favicon
 		- content blocks
-		- pagination (both front and backend)
+		DONE - pagination (both front and backend)
 		- taxonomies on posts make collapsable
 		- posts filter on back end
 		- search functionality
@@ -82,8 +82,6 @@ things to improve...
 6. In admin_layout.pug add at the bottom where the scripts are called...
 	when 'postType'
 			script(src='/static/js/admin/admin_{postType}.js')
-
-
 
 
 ... add permissions

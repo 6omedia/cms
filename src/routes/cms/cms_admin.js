@@ -4,6 +4,8 @@ var cms_admin = express.Router();
 var User = require('../../models/user');
 var Post = require('../../models/post');
 var Taxonomy = require('../../models/taxonomy');
+var fs = require('fs');
+var dir = require('node-dir');
 
 var mid = require('../../middleware');
 
@@ -223,8 +225,6 @@ cms_admin.get('/taxonomies/:tax_name', mid.checkUserAdmin, function(req, res, ne
 
         const taxName = mid.allTitleCase(tax_name);
 
-        console.log("Tax name: ", taxName);
-
         Taxonomy.findOne({"taxonomy_name": taxName}).sort({"taxonomy_terms.parent": 1}).exec(function(error, taxonomy){
 
             if(error){
@@ -242,6 +242,56 @@ cms_admin.get('/taxonomies/:tax_name', mid.checkUserAdmin, function(req, res, ne
             }
 
         });
+
+    });
+
+});
+
+cms_admin.get('/media/images', mid.checkUserAdmin, function(req, res, next){
+
+    fs.readdir('./src/public/uploads/posts', function(err, files) {
+        
+        if (err){
+
+            console.log(err);
+
+        }else{
+
+            res.render('admin_media', {
+                title: 'Admin Media',
+                h1: 'Images',
+                type: 'images',
+                user: req.thisUser,
+                files: files,
+                admin_script: 'media'
+            });
+
+        }
+
+    });
+
+});
+
+cms_admin.get('/media/videos', mid.checkUserAdmin, function(req, res, next){
+
+    fs.readdir('./src/public/uploads/videos', function(err, files) {
+        
+        if (err){
+
+            console.log(err);
+
+        }else{
+
+            res.render('admin_media', {
+                title: 'Admin Media',
+                h1: 'Videos',
+                type: 'videos',
+                user: req.thisUser,
+                files: files,
+                admin_script: 'media'
+            });
+
+        }
 
     });
 

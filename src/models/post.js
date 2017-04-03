@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+// var mongoosePages = require('mongoose-pages');
+
 var PostsSchema = new mongoose.Schema(
 	{
 		title: {
@@ -31,6 +33,7 @@ var PostsSchema = new mongoose.Schema(
 	}
 );
 
+// mongoosePages.skip(PostsSchema);
+
 var Posts = mongoose.model('Posts', PostsSchema);
 module.exports = Posts;
-

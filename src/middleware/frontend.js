@@ -41,4 +41,36 @@ function increaseViewCount(contentType, postid) {
 
 }
 
+function createPaginationLinks(docsPerPage, pageNumber, url, count){
+
+	let pageCount = Math.ceil(count / docsPerPage);
+
+	let links = [];
+
+	if(pageNumber > 1){
+		links.push(`<a class="prev" href="">&#8592;</a>`);
+	}
+
+	for(let i=0; i<pageCount; i++){
+
+		let pageNum = i + 1;
+		let linkUrl = url + '/' + pageNum;
+		
+		if(pageNumber == pageNum){
+			links.push(`<a href="${linkUrl}" class="current_page">${pageNum}</a>`);
+		}else{
+			links.push(`<a href="${linkUrl}">${pageNum}</a>`);
+		}
+
+	};
+
+	if(pageNumber < pageCount){
+		links.push(`<a class="next" href="">&#8594;</a>`);
+	}
+
+	return links;
+
+}
+
+module.exports.createPaginationLinks = createPaginationLinks;
 module.exports.increaseViewCount = increaseViewCount;
