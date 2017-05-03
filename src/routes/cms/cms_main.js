@@ -129,11 +129,7 @@ cms_main.get('/posts/:slug', function(req, res, next){
           next();
         }else{
 
-          // console.log('Post id: ', post);
-
           const plusViewCount = frontend.increaseViewCount('post', post._id);
-
-          // console.log('plusViewCount: ', plusViewCount);
 
           res.render('single_post', {
               post: post,

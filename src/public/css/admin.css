@@ -133,7 +133,7 @@ header .list li a {
 }
 
 .side_section {
-	width: 300px;
+	width: 170px;
     min-height: 1000px;
     float: left;
     background: #334369;
@@ -143,7 +143,7 @@ header .list li a {
 
 .side_section h1 {
     color: #ffffff;
-    font-size: 26px;
+    font-size: 20px;
     background: #4a5f9e;
     margin: 0px;
     padding: 10px 15px;
@@ -154,12 +154,9 @@ header .list li a {
     font-size: 18px;
 }
 
-/*.side_section h2 {
-    color: #c7cfe0;
-}*/
-
 .side_section a {
 	color: #c7cfe0;
+    font-size: 16px;
 }
 
 .side_taxonomies {
@@ -174,7 +171,7 @@ header .list li a {
     padding: 70px 40px 40px 40px;
 	float: right;
 	background: #fff;
-	width: calc(100% - 300px);
+	width: calc(100% - 170px);
 	min-height: 1000px;
 }
 
@@ -513,6 +510,7 @@ header .list li a {
     border-radius: 3px;
     border: solid 1px #d2d2d2;
     cursor:all-scroll;
+    overflow: hidden;
 }
 
 .contentBlock h4 {
@@ -686,4 +684,29 @@ header .list li a {
 
 .media-videos video {
     width: 100%;
+}
+
+/*                                                    LAP TOP
+ ******************************************************************************************************************************/
+
+@media (min-width: 992px) {
+    
+    
+
+}
+
+
+/*                                                    DESK TOP
+ ******************************************************************************************************************************/
+
+@media (min-width: 1400px) {
+    
+    .side_section {
+        width: 250px;
+    }
+
+    .main_section {
+        width: calc(100% - 250px);
+    }
+    
 }

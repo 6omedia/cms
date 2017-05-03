@@ -148,7 +148,7 @@ class PostManager {
 			const popup = new Popup(
 				// positive
 				function(){
-					delete_thing(postType_slug, postid, '/admin/' + postType_slug + 's', thisPm.postsForm);
+					delete_thing(postType_slug, postid, '/admin/' + postType_slug + 's/page/1', thisPm.postsForm);
 				}, 
 				// negitive
 				function(){
@@ -172,7 +172,7 @@ class PostManager {
 			const popup = new Popup(
 				// positive
 				function(){
-					delete_thing(postType_slug, postid, '/admin/' + postType_slug + 's', thisPm.postsForm);
+					delete_thing(postType_slug, postid, '/admin/' + postType_slug + 's/page/1', thisPm.postsForm);
 				}, 
 				// negitive
 				function(){

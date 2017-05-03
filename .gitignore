@@ -1,2 +1,3 @@
-/config.js
-/src/public/uploads
+node_modules/
+config.js
+src/public/uploads

@@ -8,6 +8,7 @@ var fs = require('fs');
 var dir = require('node-dir');
 
 var mid = require('../../middleware');
+var frontend = require('../../middleware/frontend');
 
 // admin dashboard
 
@@ -21,24 +22,37 @@ cms_admin.get('/', mid.checkUserAdmin, function(req, res, next){
 
 });
 
-cms_admin.get('/posts', mid.checkUserAdmin, function(req, res, next){
+cms_admin.get('/posts/page/:pageNum', mid.checkUserAdmin, function(req, res, next){
 
     mid.give_permission(req.thisUser, 'manage_posts', res, function(){
 
-        Post.find({}, function(err, posts){
+        const path = req.path;
+        res.locals.path = path;
 
-            if(err){
-                next(err);
-            }else{
-                res.render('admin_posts', {
-                    title: 'Posts',
-                    user: req.thisUser,
-                    fullname: req.thisUser.fullname,
-                    posts: posts,
-                    admin_script: 'posts'
-                });
-            }
+        var docsPerPage = 30;
+        var pageNumber = req.params.pageNum;
+        var offset = (pageNumber * docsPerPage) - docsPerPage;
 
+        Post.count({}, function(err, count){
+            Post.find({}).skip(offset).limit(docsPerPage).sort({date: -1}).exec(function(err, posts){
+
+                if(err){
+                    next(err);
+                }else{
+
+                    const pageinationLinks = frontend.createPaginationLinks(docsPerPage, pageNumber, '/admin/posts/page', count);
+
+                    res.render('admin_posts', {
+                        title: 'Posts',
+                        user: req.thisUser,
+                        fullname: req.thisUser.fullname,
+                        posts: posts,
+                        pageinationLinks: pageinationLinks,
+                        admin_script: 'posts'
+                    });
+                }
+
+            });
         });
 
     });
